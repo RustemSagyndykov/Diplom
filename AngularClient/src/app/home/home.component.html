@@ -1,4 +1,4 @@
-<div class="navbar navbar-dark bg-dark">
+<!-- <div class="navbar navbar-dark bg-dark">
     <a class="navbar-brand text-white">JWT Auth System</a>
     <ul class = "navbar-nav  mr-auto">
         <li class="nav-item">
@@ -14,4 +14,67 @@
         <li class="list-group-item"><strong>FullName : </strong>{{userDetails.fullName}}</li>
         <li class="list-group-item"><strong>Email : </strong>{{userDetails.email}}</li>
     </ul>
-</div>
+</div> -->
+
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar"
+              nzCollapsible
+              nzWidth="256px"
+              nzBreakpoint="md"
+              [(nzCollapsed)]="isCollapsed"
+              [nzTrigger]="null">
+      <div class="sidebar-logo">
+        <a href="https://ng.ant.design/" target="_blank">
+          <!-- <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo"> -->
+          <img src="https://img.icons8.com/color/72/devpost.svg" alt="logo">
+          <h1>Diplom</h1>
+        </a>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <li nz-submenu nzOpen nzTitle="Общее" nzIcon="dashboard">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/forbidden">Тест</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+                <a routerLink="/home/cabinet">Личный кабинет</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a>Статистика</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a>Курсы</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzOpen nzTitle="Админка" nzIcon="form">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a>Админка</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+        <div class="app-header">
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+              <i class="trigger"
+                 nz-icon
+                 [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+              ></i>
+          </span>
+          <div class="float-right mr-2">
+            <button class="btn btn-outline-dark" (click)="onLogout()">Logout</button>
+          </div>
+        </div>
+      </nz-header>
+      <nz-content>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+  

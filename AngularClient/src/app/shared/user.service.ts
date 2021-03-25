@@ -60,6 +60,10 @@ export class UserService {
     return this.http.get(this.BaseURI + '/UserProfile');
   }
 
+  updateUserProfile(user:ApplicationUser){
+    return this.http.post(this.BaseURI + '/UserProfile/Update',user);
+  }
+
   roleMatch(allowedRole): boolean{
     var isMatch = false;
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
@@ -72,4 +76,11 @@ export class UserService {
     });
     return isMatch;
   }
+}
+
+export class ApplicationUser{
+  public userName:string;
+  public email:string;
+  public password:string;
+  public fullName:string;
 }

@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-body{
-    background-color: #04c582;;
+ body{
+    /* background-color: #04c582; */
+    background-image: url("assets\img\wallhaven-r7jr7m.jpg");
+    background-repeat: no-repeat;
 }
-
+/*
 input.form-control,input.form-control:focus{
     background-color: #636b7b;
     color: #fff;
@@ -55,10 +57,10 @@ div.form-group.required>label:first-child:after{
     padding: 0px;
     -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
     box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  }
+  } */
 
   /* Tabs */
-.tab-header{
+/* .tab-header{
     text-align: center;
 }
 
@@ -92,4 +94,4 @@ div.form-group.required>label:first-child:after{
  div.form-group label:first-child{
     text-transform: uppercase;
     font-size: 0.9rem;
- }
+ } */

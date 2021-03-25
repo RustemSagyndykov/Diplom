@@ -20,21 +20,52 @@ namespace TestDiplom.Controllers
             _userManager = userManager;
         }
 
+        
+        
         [HttpGet]
         [Authorize]
         //Get : /api/UserProfile
-        public async Task<Object> GetUserProfile()
+        public async Task<ApplicationUserModel> GetUserProfile()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == "UserID").Value;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var a = new ApplicationUserModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                UserName = user.UserName
+            };
+
+            return a;
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("Update")]
+        //POST : /api/UserProfile/Update
+
+        public async Task<IActionResult> EditUserProfile(ApplicationUserModel userProfile)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            return new
+            user.FullName = userProfile.FullName;
+            user.Email = userProfile.Email;
+            user.UserName = userProfile.UserName;
+            try
             {
-                user.FullName,
-                user.Email,
-                user.UserName
-            };
+                var result = await _userManager.UpdateAsync(user);
+
+                return Ok(result);
+            }
+            
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
