@@ -83,4 +83,5 @@ export class ApplicationUser{
   public email:string;
   public password:string;
   public fullName:string;
+  public imgPath: string;
 }

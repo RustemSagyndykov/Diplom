@@ -1,0 +1,32 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>Детали</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                        <ul>
+                            <li *ngFor="let file of item.lectureFiles">
+                                <a>
+                                    {{file.fileName}}
+                                    <app-download [fileName]="file.fileName"></app-download>
+                                </a>
+                            </li>
+                        </ul>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-md btn-outline-primary blue" (click)="close()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

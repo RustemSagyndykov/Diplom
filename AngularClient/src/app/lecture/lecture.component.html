@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Название</label>
+            <input class="form-control" [(ngModel)]="lecture.name" [readonly]="viewMode">
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!viewMode">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Content</label>
+            <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="lecture.content" [config]="editorConfig"></angular-editor>
+        </div>
+        <!-- <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="lecture" [config]="editorConfig"></angular-editor> -->
+    </div>
+</div>
+<div class="row" *ngIf="viewMode">
+    <div class="col-md-12">
+        <div [innerHtml]="lecture.content"></div>
+        <!-- <p>{{lecture}}</p> -->
+    </div>
+</div>
+<div class="row" *ngIf="!viewMode">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>UploadFiles</label>
+            <app-file-upload  (onUploadFinished)="uploadFinished($event)" (fileName)="getFileName($event)"></app-file-upload>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="lectureFiles.length != 0">
+    <div class="col-md-12">
+        <label>Прикрепленные файлы</label> 
+    </div>
+</div>
+<div class="container">
+    <ul>
+        <li *ngFor="let file of lectureFiles">
+            <a>
+                {{file.fileName}}
+                <app-download [fileName]="file.fileName"></app-download>
+                <button *ngIf="!viewMode" class="btn btn-outline-danger ml-3" (click)="delete(file.fileName)"><i class="fas fa-trash-alt"></i> Delete</button>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="row" *ngIf="!viewMode">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-outline-primary px-3 py-2" (click)="create()"><i class="fa fa-save"></i> Сохранить</button>
+        </div>
+    </div>
+</div>

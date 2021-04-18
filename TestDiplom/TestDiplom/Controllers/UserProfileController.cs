@@ -35,7 +35,8 @@ namespace TestDiplom.Controllers
             {
                 FullName = user.FullName,
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.UserName,
+                imgPath = user.ImgPath
             };
 
             return a;
@@ -55,6 +56,7 @@ namespace TestDiplom.Controllers
             user.FullName = userProfile.FullName;
             user.Email = userProfile.Email;
             user.UserName = userProfile.UserName;
+            user.ImgPath = userProfile.imgPath;
             try
             {
                 var result = await _userManager.UpdateAsync(user);

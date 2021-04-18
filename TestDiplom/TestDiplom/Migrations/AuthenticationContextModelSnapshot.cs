@@ -221,12 +221,61 @@ namespace TestDiplom.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("TestDiplom.Models.Lecture.Lecture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Lectures");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Lecture.LectureFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LectureId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LectureId");
+
+                    b.ToTable("LectureFiles");
+                });
+
             modelBuilder.Entity("TestDiplom.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ImgPath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -280,6 +329,26 @@ namespace TestDiplom.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Lecture.Lecture", b =>
+                {
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "OwnerFk")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("OwnerFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Lecture.LectureFile", b =>
+                {
+                    b.HasOne("TestDiplom.Models.Lecture.Lecture", "LectureFk")
+                        .WithMany()
+                        .HasForeignKey("LectureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LectureFk");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,5 +11,6 @@ namespace TestDiplom.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string FullName { get; set; }
+        public string imgPath { get; set; }
     }
 }

@@ -26,6 +26,16 @@ import { ru_RU } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import ru from '@angular/common/locales/ru';
 import { CabinetComponent } from './cabinet/cabinet.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileDownloadComponent } from './file-download/file-download.component';
+import { FileDownloadService } from './shared/fileService/file-download.service'; 
+import { LectureService } from './shared/lectureService/lecture.service'; 
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { LectureComponent } from './lecture/lecture.component';
+import { LectureListComponent } from './lecture/lecture-list/lecture-list.component';
+import { TableModule } from 'primeng/table';
+import { ViewLectureModalComponent } from './lecture/view-lecture-modal/view-lecture-modal.component';
+import { ModalModule } from 'ngx-bootstrap/modal';;
 
 registerLocaleData(ru);
 
@@ -38,7 +48,12 @@ registerLocaleData(ru);
     HomeComponent,
     AdminPanelComponent,
     ForbiddenComponent,
-    CabinetComponent
+    CabinetComponent,
+    FileUploadComponent,
+    FileDownloadComponent,
+    LectureComponent,
+    LectureListComponent,
+    ViewLectureModalComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +67,13 @@ registerLocaleData(ru);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    AngularEditorModule,
+    TableModule,
+    ModalModule.forRoot(),
     ToastrModule.forRoot(),
     FormsModule
   ],
-  providers: [UserService,{
+  providers: [UserService,FileDownloadService,LectureService,{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

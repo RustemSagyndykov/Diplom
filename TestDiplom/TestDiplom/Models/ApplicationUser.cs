@@ -11,5 +11,6 @@ namespace TestDiplom.Models
     {
         [Column(TypeName="nvarchar(150)")]
         public string FullName { get; set; }
+        public string ImgPath { get; set; }
     }
 }

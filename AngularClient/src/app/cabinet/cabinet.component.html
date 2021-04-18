@@ -3,6 +3,30 @@
         <button class="btn btn-outline-success px-3 py-2" (click)="edit()">Редакировать</button>
     </div>
     <div class="col-md-12 my-2 pb-10">
+        <div>
+            <label>Image</label>
+        </div>
+        <div class="">
+            <img [src]="createImgPath(userDetails.imgPath)" alt="profile picture" style="width:60px; height:60px;">
+        </div>
+        <div class="form-group">
+            <label>UploadImage</label>
+            <app-file-upload (onUploadFinished)="uploadFinished($event)"></app-file-upload>
+        </div>
+        <h2>File List</h2>
+        <p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
+        <hr>
+        <div class="container">
+            <ul>
+                <li *ngFor="let file of files">
+                    <a>
+                        {{file}}
+                        <app-download [disabled]="showProgress" [fileName]="file"
+                            (downloadStatus)="downloadStatus($event)"></app-download>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="form-group">
             <label>Name</label>
             <input class="form-control" [readonly]="!editMode" [(ngModel)]="userDetails.userName">
@@ -26,7 +50,8 @@
     </div>
     <div class="col-md-12">
         <div class="d-flex justify-content-center">
-            <button class="btn btn-outline-primary px-3 py-2" (click)="save(userDetails)" *ngIf="editMode">Сохранить</button>
+            <button class="btn btn-outline-primary px-3 py-2" (click)="save(userDetails)"
+                *ngIf="editMode">Сохранить</button>
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TestDiplom.Models.Lecture;
 
 namespace TestDiplom.Models
 {
@@ -15,5 +16,7 @@ namespace TestDiplom.Models
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Lecture.Lecture> Lectures { get; set; }
+        public DbSet<LectureFile> LectureFiles { get; set; }
     }
 }
