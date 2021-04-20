@@ -1,0 +1,71 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #testForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="!test.id">Редактирование теста</span>
+                        <span *ngIf="test.id">Просмотр теста</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group border-bottom border-dark">
+                        <label for="Test_Name" style="font-size: 1.1rem;">Название теста: *</label>
+                        <input type="text" id="Test_Name" class="form-control mb-2" [(ngModel)]="test.name" name="Name" required />
+                    </div>
+
+                    <div class=" border-bottom border-dark" *ngFor="let item of test.testQuestions; let i = index">
+                        <div class="form-group">
+                            <label for="Test_Name">Название {{i+1}} вопроса: *</label>
+                            <div class="input-group">
+                                <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="test.testQuestions[i].name"
+                                    placeholder="Название вопроса" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-danger" type="button" (click)="deleteTestQuestionItem(test.testQuestions[i])">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="" *ngFor="let item of test.testQuestions[i].testQuestionAnswer; let j = index">
+                            <div class="form-group">
+                                <label for="Test_Name">Название {{j+1}} ответа на вопрос: (Галочка - правильность варианта) *</label>
+                                <div class="input-group">
+                                    <input class="form-control" [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="test.testQuestions[i].testQuestionAnswer[j].name" placeholder="Название вопроса" required>
+                                    <div class="input-group-append">
+                                        <input type="checkbox" style="height: 2.7em; width: 2.7em;" [ngModelOptions]="{standalone: true}" [(ngModel)]="test.testQuestions[i].testQuestionAnswer[j].isCorrect"/>
+                                        <button class="btn btn-outline-danger" type="button"
+                                            (click)="deleteTestQuestionAnswerItem(test.testQuestions[i].testQuestionAnswer[j], i)">Удалить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-outline-primary float-right mb-3"
+                                    (click)="addTestQuestuionAnswer(test.testQuestions[i])"> <i class="fa fa-plus"></i>Добавить ответ на вопрос</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-outline-primary mt-3"
+                                (click)="addTestQuestuion()"> <i class="fa fa-plus"></i>Добавить вопрос</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-outline-danger" (click)="close()">Закрыть</button>
+                    <button type="submit" class="btn btn-outline-primary blue" [disabled]="!testForm.form.valid" [buttonBusy]="saving" [busyText]="saving"><i class="fa fa-save"></i> <span> Сохранить</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+

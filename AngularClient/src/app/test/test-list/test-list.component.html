@@ -1,15 +1,15 @@
-<p-table #dt [value]="lectureList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
+<p-table #dt [value]="testList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
     [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
     [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
     <ng-template pTemplate="caption">
         <div class="table-header">
-            <span>ВЕСЬ СПИСОК ЛЕКЦИЙ</span>
+            <span>ВЕСЬ СПИСОК ТЕСТОВ</span>
             <span>
                 <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
             </span>
             <span>
-                <button class="btn btn-md btn-outline-primary float-right" (click)="createLecture()"><i class="fa fa-plus"></i> Создать новую лекцию</button>
+                <button class="btn btn-md btn-outline-primary float-right" (click)="create()"><i class="fa fa-plus"></i> Создать новый тест</button>
             </span>
         </div>
     </ng-template>
@@ -67,12 +67,12 @@
                         <li>
                             <a href="javascript:;" 
                                 class="dropdown-item" style="font-size: small;"
-                                (click)="editLecture(record.id)">Редактировать</a>
+                                (click)="createOrEditTestModal.show(record)">Редактировать</a>
                         </li>
                         <div class="dropdown-divider"></div>
                         <li>
                             <a class="dropdown-item" href="javascript:;" style="font-size: small;"
-                            (click)="deleteLectureItem(record.id)">Удалить</a>
+                            (click)="deleteTestItem(record.id)">Удалить</a>
                         </li>
                     </ul>
                 </div>
@@ -101,4 +101,7 @@
         </tr>
     </ng-template>
 </p-table>
-<app-view-lecture-modal #viewLectureeModal></app-view-lecture-modal>
+
+<app-create-or-edit-test #createOrEditTestModal (modalSave)="getTests($event)"></app-create-or-edit-test>
+
+

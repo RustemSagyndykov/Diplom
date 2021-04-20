@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestDiplom.Models;
 
 namespace TestDiplom.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20210414193821_Added_Tets")]
+    partial class Added_Tets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,9 +276,6 @@ namespace TestDiplom.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("IdForView")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -288,55 +287,6 @@ namespace TestDiplom.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Tests");
-                });
-
-            modelBuilder.Entity("TestDiplom.Models.test.TestQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("IdForView")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TestId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestQuestions");
-                });
-
-            modelBuilder.Entity("TestDiplom.Models.test.TestQuestionAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("IdForView")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsCorrect")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TestQuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestQuestionId");
-
-                    b.ToTable("TestQuestionAnswers");
                 });
 
             modelBuilder.Entity("TestDiplom.Models.ApplicationUser", b =>
@@ -430,28 +380,6 @@ namespace TestDiplom.Migrations
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("OwnerFk");
-                });
-
-            modelBuilder.Entity("TestDiplom.Models.test.TestQuestion", b =>
-                {
-                    b.HasOne("TestDiplom.Models.test.Test", "TestFk")
-                        .WithMany()
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestFk");
-                });
-
-            modelBuilder.Entity("TestDiplom.Models.test.TestQuestionAnswer", b =>
-                {
-                    b.HasOne("TestDiplom.Models.test.TestQuestion", "TestQuestionFk")
-                        .WithMany()
-                        .HasForeignKey("TestQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestQuestionFk");
                 });
 #pragma warning restore 612, 618
         }

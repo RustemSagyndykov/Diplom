@@ -102,10 +102,12 @@ export class LectureComponent implements OnInit {
   }
 
   create(){
+    this.lecture.lectureFiles = [];
     this.lecture.lectureFiles = this.lectureFiles;
-    this.service.createLecture(this.lecture).subscribe(
+    //this.service.createLecture(this.lecture).subscribe(
+    this.service.createOrEdit(this.lecture).subscribe(
       (res: any) => {
-      this.toastr.success('Created!', 'Lecture created successful.');
+      this.toastr.success('Saved!', 'Lecture saved successful.');
       this.router.navigateByUrl('/home/lectureList');}
     );
   }

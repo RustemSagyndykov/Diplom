@@ -35,7 +35,11 @@ import { LectureComponent } from './lecture/lecture.component';
 import { LectureListComponent } from './lecture/lecture-list/lecture-list.component';
 import { TableModule } from 'primeng/table';
 import { ViewLectureModalComponent } from './lecture/view-lecture-modal/view-lecture-modal.component';
-import { ModalModule } from 'ngx-bootstrap/modal';;
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TestComponent } from './test/test.component';
+import { TestListComponent } from './test/test-list/test-list.component';
+import { TestService } from './shared/TestService/test-service.service';
+import { CreateOrEditTestComponent } from './test/create-or-edit-test/create-or-edit-test.component';
 
 registerLocaleData(ru);
 
@@ -53,7 +57,10 @@ registerLocaleData(ru);
     FileDownloadComponent,
     LectureComponent,
     LectureListComponent,
-    ViewLectureModalComponent
+    ViewLectureModalComponent,
+    TestComponent,
+    TestListComponent,
+    CreateOrEditTestComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +80,7 @@ registerLocaleData(ru);
     ToastrModule.forRoot(),
     FormsModule
   ],
-  providers: [UserService,FileDownloadService,LectureService,{
+  providers: [UserService,FileDownloadService,LectureService, TestService,{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

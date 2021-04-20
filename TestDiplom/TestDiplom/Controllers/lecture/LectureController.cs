@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,43 @@ namespace TestDiplom.Controllers.lecture
         public LectureController(AuthenticationContext context)
         {
             _context = context;
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("CreateOrEdit")]
+        //POST : /api/Lecture/CreateOrEdit
+
+        public async Task CreateOrEdit(LectureModel model)
+        {
+            if (model.Id == 0)
+            {
+                await CreateLecture(model);
+            }
+            else
+            {
+                await UpdateLecture(model);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("UpdateLecture")]
+        //POST : /api/Test/UpdateLecture
+
+        public async Task UpdateLecture(LectureModel model)
+        {
+
+            var updateLecture = await _context.Lectures.FirstOrDefaultAsync(l => l.Id == model.Id);
+
+            updateLecture.Name = model.Name;
+            updateLecture.Content = model.Content;
+
+            await DeleteLecFiles(model.Id);
+
+            await InsertFiles(model.LectureFiles,model.Id);
+
+            await _context.SaveChangesAsync();
         }
 
         [HttpGet]
@@ -102,6 +140,17 @@ namespace TestDiplom.Controllers.lecture
             if (deleteItem != null)
             {
                 _context.Lectures.Remove(deleteItem);
+                _context.SaveChanges();
+            }
+            return deleteItem;
+        }
+
+        protected async Task<List<LectureFile>> DeleteLecFiles(int id)
+        {
+            var deleteItem = await _context.LectureFiles.Where(l => l.LectureId == id).ToListAsync();
+            if (deleteItem != null)
+            {
+                _context.LectureFiles.RemoveRange(deleteItem);
                 _context.SaveChanges();
             }
             return deleteItem;

@@ -1,9 +1,9 @@
   
-<div class="row" style="margin-bottom:15px;">
-    <div class="col-md-3">
+<div class="row" style="">
+    <div class="col-md-12">
       <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" multiple>
-      <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
-    </div>
+      <button type="button" class="btn btn-outline-success" (click)="file.click()"><i class="fa fa-upload"></i> {{ButtonName}}</button>
+    <!-- </div>
     <div class="col-md-4">
       <span class="upload" *ngIf="progress > 0">
         {{progress}}%
@@ -11,5 +11,5 @@
       <span class="upload" *ngIf="message">
         {{message}}
       </span>
-    </div>
+    </div> -->
   </div>

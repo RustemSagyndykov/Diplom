@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter,Output } from '@angular/core';
+import { Component, OnInit, EventEmitter,Output,Input } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
@@ -13,6 +13,7 @@ export class FileUploadComponent implements OnInit {
   
   @Output() public onUploadFinished = new EventEmitter();
   @Output() fileName = new EventEmitter<string>();
+  @Input() ButtonName: string = "Загруить файл";
 
   constructor(private http: HttpClient) { }
 

@@ -15,6 +15,10 @@ export class LectureService {
     return this.http.post(this.BaseURI + '/Lecture/CreateLecture',lecture);
   }
 
+  createOrEdit(lecture:Lecture){
+    return this.http.post(this.BaseURI + '/Lecture/CreateOrEdit',lecture);
+  }
+
   getAll(){
     return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForUser');
   }
