@@ -28,6 +28,11 @@ export class CabinetComponent implements OnInit {
   constructor(private service: UserService,private toastr: ToastrService,private serviceDownload: FileDownloadService) { }
 
   ngOnInit(): void {
+    this.getUserProfile()
+    this.getFiles();
+  }
+
+  getUserProfile(){
     this.service.getUserProfile().subscribe(
       (res:ApplicationUser) =>{
         this.userDetails = res;
@@ -37,17 +42,22 @@ export class CabinetComponent implements OnInit {
         console.log(err);
       }
     );
-
-    this.getFiles();
-
   }
 
   edit(){
     this.editMode = true;
   }
 
+  undoEdit(){
+    this.editMode = false;
+    this.getUserProfile();
+  }
+
   save(user: ApplicationUser){
-    user.imgPath = this.response.dbPath;
+    if(this.response == undefined || this.response == null)
+      user.imgPath = "";
+    else
+      user.imgPath = this.response.dbPath;
     this.service.updateUserProfile(user).subscribe(
       (res: any) => {
         if(res.succeeded){

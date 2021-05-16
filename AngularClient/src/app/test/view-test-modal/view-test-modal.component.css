@@ -1,0 +1,6 @@
+input[disabled]{
+    background-color: white;
+}
+input[readonly] {
+    background-color: white;
+}

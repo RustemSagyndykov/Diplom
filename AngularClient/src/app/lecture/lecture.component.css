@@ -1,0 +1,7 @@
+input[readonly] {
+    background-color: white;
+}
+
+.boldStyle{
+    font-weight: bold;
+}

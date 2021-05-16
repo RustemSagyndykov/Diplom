@@ -4,6 +4,8 @@ import { Test } from 'src/app/models/Test';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CreateOrEditTestComponent } from '../create-or-edit-test/create-or-edit-test.component';
+import { ViewTestModalComponent } from '../view-test-modal/view-test-modal.component';
+import { UserRole } from 'src/app/models/Roles';
  
 @Component({
   selector: 'app-test-list',
@@ -17,18 +19,35 @@ export class TestListComponent implements OnInit {
   testList:Test[] = [];
   test: Test = new Test();
   loading: boolean = true;
+  role;
+  userRoles = UserRole;
   @ViewChild('createOrEditTestModal', { static: true }) createOrEditTestModal: CreateOrEditTestComponent;
+  @ViewChild('viewTestModal', { static: true }) viewTestModal: ViewTestModalComponent;   
 
   ngOnInit(): void {
+    this.role = this.getUserRole();
     this.getAll();
   }
 
+  getUserRole(){
+    var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+    var userRole = payLoad.role;
+    return userRole;
+  }
+
   getAll(){
-    this.service.getAllforUser().subscribe((res:Test[])=>{
-      this.testList =res;
-      this.loading = false;
-      console.log(this.testList);
-    });
+    if(this.role == this.userRoles.Admin){
+      this.service.getAll().subscribe((res:Test[])=>{
+        this.testList =res;
+        this.loading = false;
+      });
+    }
+    else{
+      this.service.getAllforUser().subscribe((res:Test[])=>{
+        this.testList =res;
+        this.loading = false;
+      });
+    }
   }
 
   createTest(){
@@ -42,6 +61,10 @@ export class TestListComponent implements OnInit {
 
   editTest(id:number){
     this.router.navigate(['/home/lecture'], { queryParams: { id: id, edit:true } }).then(f => { location.reload(true) });
+  }
+
+  testing(id:number){
+    this.router.navigate(['/home/testing'], { queryParams: { id: id} })/*.then(f => { location.reload(true) });*/
   }
 
   deleteTestItem(id:number){

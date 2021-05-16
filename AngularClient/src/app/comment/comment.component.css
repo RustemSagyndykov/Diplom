@@ -1,0 +1,9 @@
+.floatRight{
+    float:right;
+}
+
+.block {
+    overflow: auto;
+    max-height: 400px;
+    border: 1px solid gray;
+   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../shared/user.service';
+import { ApplicationUser, UserService } from '../shared/user.service';
+import { UserRole } from '../models/Roles';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +10,17 @@ import { UserService } from '../shared/user.service';
 })
 export class HomeComponent implements OnInit {
 
-  userDetails;
+  userDetails:ApplicationUser;
   isCollapsed = false;
+  userRoles = UserRole;
+  role;
 
   constructor(private router: Router, private service: UserService) { }
 
   ngOnInit(): void {
+    this.role = this.getUserRole();
     this.service.getUserProfile().subscribe(
-      res =>{
+      (res:ApplicationUser) =>{
         this.userDetails = res;
       },
       err =>{
@@ -30,6 +34,12 @@ export class HomeComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  getUserRole(){
+    var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+    var userRole = payLoad.role;
+    return userRole;
   }
 
   onLogout(){

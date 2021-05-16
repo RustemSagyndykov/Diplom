@@ -1,0 +1,73 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>Выбрать практическое задание</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+                        <p-table #dt [value]="practiceList" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="5"
+                        [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading" [paginator]="true"
+                        currentPageReportTemplate="Показаны с {first} по {last} из {totalRecords}" [filterDelay]="0"
+                        [globalFilterFields]="['name']">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 30%;">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Действия
+                                    </div>
+                                </th>
+                                <th style="width: 70%;" pSortableColumn="name">
+                                    <div class="p-d-flex p-jc-between p-ai-center">
+                                        Название
+                                        <p-sortIcon field="name"></p-sortIcon>
+                                        <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                                    </div>
+                                </th>
+                    
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-record>
+                            <tr class="p-selectable-row">
+                                <td style="width: 30px">
+                                    <div class="btn-group dropdown" normalizePosition>
+                                        <button class="btn btn-sm btn-outline-primary" type="button"
+                                            (click)="setAndSave(record)">
+                                            Выбрать
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="p-column-title">Name</span>
+                                    {{record.name}}
+                                </td>
+                    
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5" class="text-center">Записей не найдено.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>        
+                    </div>
+                
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-outline-primary"
+                    (click)="close()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+

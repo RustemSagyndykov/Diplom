@@ -1,0 +1,134 @@
+<p-table #dt [value]="usersList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
+    [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
+    [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
+    [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
+    <ng-template pTemplate="caption">
+        <div class="table-header">
+            <span>ВЕСЬ СПИСОК ПОЛЬЗОВАТЕЛЕЙ</span>
+            <span>
+                <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
+            </span>
+            <span>
+                <button class="btn btn-md btn-outline-primary float-right" (click)="create()"><i class="fa fa-plus"></i> Создать нового пользователя</button>
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th >
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Действия
+                </div>
+            </th>
+            <th pSortableColumn="userName">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Название учетной записи пользователя
+                    <p-sortIcon field="userName"></p-sortIcon>
+                    <p-columnFilter type="text" field="userName" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th>
+            <!-- <th pSortableColumn="fullName">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Полное имя 
+                    <p-sortIcon field="fullName"></p-sortIcon>
+                    <p-columnFilter type="text" field="fullName" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th> -->
+            
+            <!-- <th pSortableColumn="email">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Почта
+                    <p-sortIcon field="email"></p-sortIcon>
+                    <p-columnFilter type="text" field="email" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th> -->
+            <th pSortableColumn="firstName">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    ФИО пользователя
+                    <p-sortIcon field="firstName"></p-sortIcon>
+                    <p-columnFilter type="text" field="firstName" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th>
+            <th pSortableColumn="phoneNumber">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Номер телефона
+                    <p-sortIcon field="phoneNumber"></p-sortIcon>
+                    <p-columnFilter type="text" field="phoneNumber" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th>
+            <th pSortableColumn="isBlocked">
+                <div class="p-d-flex p-jc-between p-ai-center">
+                    Статус
+                    <p-sortIcon field="isBlocked"></p-sortIcon>
+                    <p-columnFilter type="text" field="isBlocked" display="menu" class="p-ml-auto"></p-columnFilter>
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+        <tr class="p-selectable-row">
+            <td style="width: 130px">
+                <div class="btn-group dropdown">
+                    <button class="dropdown-toggle btn btn-sm btn-outline-primary" id="dropdownMenuButton"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <i class="fa fa-cog"></i><span class="caret"></span>
+                        Действия
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li *ngIf="!record.isBlocked">
+                            <a href="javascript:;" class="dropdown-item" style="font-size: small;"
+                            (click)="blockAndUnBlockUser(record)">Заблокировать</a>
+                        </li>
+                        <div *ngIf="!record.isBlocked" class="dropdown-divider"></div>
+                        <li *ngIf="record.isBlocked">
+                            <a href="javascript:;" class="dropdown-item" style="font-size: small;"
+                            (click)="blockAndUnBlockUser(record)">Разблокировать</a>
+                        </li>
+                        <div *ngIf="record.isBlocked" class="dropdown-divider"></div>
+                        <li>
+                            <a href="javascript:;" class="dropdown-item" style="font-size: small;"
+                            (click)="viewUsersModal.show(record.id)">Просмотр</a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                        <li>
+                            <a href="javascript:;" 
+                                class="dropdown-item" style="font-size: small;"
+                                (click)="createOrEditUsersModal.show(record)">Редактировать</a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                        <li>
+                            <a class="dropdown-item" href="javascript:;" style="font-size: small;"
+                            (click)="deleteUser(record.id)">Удалить</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                {{record.userName}}
+            </td>
+            <!-- <td>
+                {{record.fullName}}
+            </td> -->
+            <!-- <td>
+                {{record.email}}
+            </td> -->
+            <td>
+                {{record.firstName + " " + record.lastName + " " + record.patronymic}}
+            </td>
+            <td>
+                {{record.phoneNumber}}
+            </td>
+            <td>
+                <span *ngIf="record.isBlocked" style="color:red;">Заблокирован</span>
+                <span *ngIf="!record.isBlocked" style="color:rgb(0, 224, 19)">Активен</span>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5" class="text-center">Записей не найдено.</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<app-create-or-edit-users-modal #createOrEditUsersModal (modalSave)="getUser()"></app-create-or-edit-users-modal>
+<app-view-users-modal #viewUsersModal></app-view-users-modal>

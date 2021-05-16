@@ -6,6 +6,7 @@ import { TestQuestion } from 'src/app/models/Testquestion';
 import { TestQuestionAnswer } from 'src/app/models/TestQuestionAnswer';
 import { TestService } from 'src/app/shared/TestService/test-service.service';
 import { finalize } from 'rxjs/operators';
+import { SubjectLookupTableModalComponent } from 'src/app/common/subject-lookup-table-modal/subject-lookup-table-modal.component';
 
 @Component({
   selector: 'app-create-or-edit-test',
@@ -15,6 +16,7 @@ import { finalize } from 'rxjs/operators';
 export class CreateOrEditTestComponent implements OnInit {
 
   @ViewChild('createOrEditModal', { static: true }) modal: ModalDirective;
+  @ViewChild('subjectLookupTableModal', { static: true }) subjectLookupTableModal: SubjectLookupTableModalComponent;
   @Output() modalSave: EventEmitter<Test> = new EventEmitter<Test>();
 
   active = false;
@@ -48,6 +50,8 @@ export class CreateOrEditTestComponent implements OnInit {
         //this.test = test;
         this.testTemp.name = test.name;
         this.testTemp.testQuestions = test.testQuestions;
+        this.testTemp.subjectId = test.subjectId;
+        this.testTemp.subjectName = test.subjectName;
         this.edit = true;
         this.active = true;
         this.modal.show();
@@ -76,6 +80,8 @@ export class CreateOrEditTestComponent implements OnInit {
     if(this.edit == true && this.saving == false){
       this.test.name = this.testTemp.name;
       this.test.testQuestions = this.testTemp.testQuestions;
+      this.test.subjectId = this.testTemp.subjectId;
+      this.test.subjectName = this.testTemp.subjectName;
     }
         
     this.active = false;
@@ -119,4 +125,19 @@ export class CreateOrEditTestComponent implements OnInit {
     console.log(this.test.testQuestions);
   }
 
+  openSelectSubjectModal(){
+    this.subjectLookupTableModal.id = null;
+    this.subjectLookupTableModal.displayName = '';
+    this.subjectLookupTableModal.show();
+  }
+
+  selectSubject(){
+    this.test.subjectId = this.subjectLookupTableModal.id;
+		this.test.subjectName = this.subjectLookupTableModal.displayName;
+  }
+
+  deleteSubject(){
+    this.test.subjectId = null;
+		this.test.subjectName = null;
+  }
 }

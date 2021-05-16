@@ -22,24 +22,24 @@
             </th>
             <th pSortableColumn="name">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
+                    Название Лекции
                     <p-sortIcon field="name"></p-sortIcon>
                     <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
-            <th pSortableColumn="name">
+            <th pSortableColumn="subjectName">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
-                    <p-sortIcon field="name"></p-sortIcon>
-                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                    Название предмета
+                    <p-sortIcon field="subjectName"></p-sortIcon>
+                    <p-columnFilter type="text" field="subjectName" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
             
-            <th pSortableColumn="name">
+            <th pSortableColumn="ownerName">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
-                    <p-sortIcon field="name"></p-sortIcon>
-                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                    ФИО Автора
+                    <p-sortIcon field="ownerName"></p-sortIcon>
+                    <p-columnFilter type="text" field="ownerName" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
             <th>
@@ -78,16 +78,13 @@
                 </div>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
+                <span class="p-column-title">{{record.name}}</span>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
+                <span class="p-column-title">{{record.subjectName}}</span>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
+                <span class="p-column-title">{{record.ownerName}}</span>
             </td>
             <td>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewLectureeModal.show(record)"><i class="fa fa-eye"></i>Просмотр файлов</button>

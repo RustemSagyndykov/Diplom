@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ThrowStmt } from '@angular/compiler';
+import { UserModel } from '../models/UserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,9 @@ export class UserService {
 
   formModel = this.fb.group({
     UserName: ['', Validators.required],
-    Email: ['', Validators.email],
-    FullName: [''],
+    //Email: ['', Validators.email],
+    //FullName: [''],
+    Role: ['',Validators.required],
     Passwords: this.fb.group({
       Password:['', [Validators.required, Validators.minLength(4)]],
       ConfirmPassword:['', Validators.required]
@@ -35,13 +37,18 @@ export class UserService {
   register(){
     var body = {
       UserName: this.formModel.value.UserName,
-      Email: this.formModel.value.Email,
-      FullName: this.formModel.value.FullName,
+      //Email: this.formModel.value.Email,
+      //FullName: this.formModel.value.FullName,
+      Role: this.formModel.value.Role,
       Password: this.formModel.value.Passwords.Password,
     };
 
     return this.http.post(this.BaseURI + '/ApplicationUser/Register',body);
 
+  }
+
+  create(user:ApplicationUser){
+    return this.http.post(this.BaseURI + '/ApplicationUser/Register',user);
   }
 
   login(formData){
@@ -64,6 +71,26 @@ export class UserService {
     return this.http.post(this.BaseURI + '/UserProfile/Update',user);
   }
 
+  updateUser(user:ApplicationUser){
+    return this.http.post(this.BaseURI + '/UserProfile/UpdateUser',user);
+  }
+
+  getAll(){
+    return this.http.get(this.BaseURI + '/UserProfile/GetAll');
+  }
+
+  getById(Id){
+    return this.http.get(this.BaseURI + '/UserProfile/GetById',{params: {id:Id}});
+  }
+
+  blockAndUnBlockUser(user:UserModel){
+    return this.http.post(this.BaseURI + '/UserProfile/BlockAndUnBlockUser',user);
+  }
+
+  deleteUser(Id){
+    return this.http.delete(this.BaseURI + '/UserProfile/Delete',{params: {id:Id}});
+  }
+
   roleMatch(allowedRole): boolean{
     var isMatch = false;
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
@@ -79,9 +106,17 @@ export class UserService {
 }
 
 export class ApplicationUser{
+  public id:string;
   public userName:string;
   public email:string;
   public password:string;
-  public fullName:string;
+  //public fullName:string;
+  public firstName: string;
+  public lastName: string;
+  public patronymic: string;
+  public phoneNumber:string;
   public imgPath: string;
+  public isBlocked: boolean;
+  public role: string;
+  public dateBirthday: Date;
 }

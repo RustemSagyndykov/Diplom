@@ -9,8 +9,17 @@ namespace TestDiplom.Models
 {
     public class ApplicationUser:IdentityUser
     {
-        [Column(TypeName="nvarchar(150)")]
-        public string FullName { get; set; }
+        //[Column(TypeName="nvarchar(150)")]
+        //public string FullName { get; set; }
+
+        [Column(TypeName = "nvarchar(150)")]
+        public string FirstName { get; set; }
+        [Column(TypeName = "nvarchar(150)")]
+        public string LastName { get; set; }
+        [Column(TypeName = "nvarchar(150)")]
+        public string Patronymic { get; set; }
         public string ImgPath { get; set; }
+        public bool? IsBlocked { get; set; }
+        public DateTime? DateBirthday { get; set; }
     }
 }

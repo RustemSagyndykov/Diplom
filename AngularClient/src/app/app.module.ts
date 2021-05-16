@@ -40,6 +40,35 @@ import { TestComponent } from './test/test.component';
 import { TestListComponent } from './test/test-list/test-list.component';
 import { TestService } from './shared/TestService/test-service.service';
 import { CreateOrEditTestComponent } from './test/create-or-edit-test/create-or-edit-test.component';
+import { TestingComponent } from './test/testing/testing.component';
+import { ViewTestModalComponent } from './test/view-test-modal/view-test-modal.component';
+import { SubjectComponent } from './subject/subject.component';
+import { SubjectService } from './shared/subjectService/subject-service.service';
+import { CreateOrEditSubjectComponent } from './subject/create-or-edit-subject/create-or-edit-subject.component';
+import { ViewSubjectModalComponent } from './subject/view-subject-modal/view-subject-modal.component';
+import { UsersComponent } from './admin/users/users.component';
+import { CreateOrEditUsersModalComponent } from './admin/users/create-or-edit-users-modal/create-or-edit-users-modal.component';
+import { ViewUsersModalComponent } from './admin/users/view-users-modal/view-users-modal.component';
+import { StudentPracticeListComponent } from './practice/student-practice-list/student-practice-list.component';
+import { PracticeListComponent } from './practice/practice-list/practice-list.component';
+import { PracticeService } from './shared/practiceService/practice-service.service';
+import { CreateOrEditPracticeModalComponent } from './practice/create-or-edit-practice-modal/create-or-edit-practice-modal.component';
+import { ViewPracticeFileModalComponent } from './practice/view-practice-file-modal/view-practice-file-modal.component';
+import { ViewPracticeModalComponent } from './practice/view-practice-modal/view-practice-modal.component';
+import { TestLookupTableModalComponent } from './common/test-lookup-table-modal/test-lookup-table-modal.component';
+import { SubjectLookupTableModalComponent } from './common/subject-lookup-table-modal/subject-lookup-table-modal.component';
+import { PracticeLookupTableModalComponent } from './common/practice-lookup-table-modal/practice-lookup-table-modal.component';
+import { StudentSubjectServiceService } from './shared/studentSubjectService/student-subject-service.service';
+import { StudentSubjectComponent } from './student-subject/student-subject.component';
+import { StudentLectureComponent } from './lecture/student-lecture/student-lecture.component';
+import { StudentTestComponent } from './test/student-test/student-test.component';
+import { StudentTestingService } from './shared/studentTestingService/student-testing-service.service';
+import { StudentPracticeComponent } from './practice/student-practice/student-practice.component';
+import { StudentPracticeService } from './shared/studentPracticeService/student-practice.service';
+import { StudentPracticeListForTeacherComponent } from './practice/student-practice-list-for-teacher/student-practice-list-for-teacher.component';
+import { CommentService } from './shared/commentService/comment.service';
+import { CommentComponent } from './comment/comment.component';
+import { StudentSubjectStatisticModalComponent } from './subject/student-subject-statistic-modal/student-subject-statistic-modal.component';
 
 registerLocaleData(ru);
 
@@ -60,7 +89,30 @@ registerLocaleData(ru);
     ViewLectureModalComponent,
     TestComponent,
     TestListComponent,
-    CreateOrEditTestComponent
+    CreateOrEditTestComponent,
+    TestingComponent,
+    ViewTestModalComponent,
+    SubjectComponent,
+    CreateOrEditSubjectComponent,
+    ViewSubjectModalComponent,
+    UsersComponent,
+    CreateOrEditUsersModalComponent,
+    ViewUsersModalComponent,
+    StudentPracticeListComponent,
+    PracticeListComponent,
+    CreateOrEditPracticeModalComponent,
+    ViewPracticeFileModalComponent,
+    ViewPracticeModalComponent,
+    TestLookupTableModalComponent,
+    SubjectLookupTableModalComponent,
+    PracticeLookupTableModalComponent,
+    StudentSubjectComponent,
+    StudentLectureComponent,
+    StudentTestComponent,
+    StudentPracticeComponent,
+    StudentPracticeListForTeacherComponent,
+    CommentComponent,
+    StudentSubjectStatisticModalComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +132,17 @@ registerLocaleData(ru);
     ToastrModule.forRoot(),
     FormsModule
   ],
-  providers: [UserService,FileDownloadService,LectureService, TestService,{
+  providers: [
+    UserService,
+    FileDownloadService,
+    LectureService, 
+    TestService,
+    SubjectService,
+    PracticeService,
+    StudentSubjectServiceService,
+    StudentTestingService,
+    StudentPracticeService,
+    CommentService,{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

@@ -41,13 +41,14 @@ div.form-group.required>label:first-child:after{
     flex-direction: column; 
     justify-content: center;
     width: 100%;
-    padding: 20px;
+    /* padding: 20px; */
+    height: 100%;
   }
 
   .wrapped-div {
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
-    background: #2e3137;
+    background: #011e38;
     padding: 30px;
     width: 90%;
     max-width: 450px;

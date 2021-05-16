@@ -50,6 +50,7 @@ namespace TestDiplom.Controllers.test
 
             updateTest.Name = model.Name;
             updateTest.IdForView = model.IdForView;
+            updateTest.SubjectId = model.SubjectId;
 
             var d = await _context.TestQuestions.Where(t => t.TestId == model.Id).ToListAsync();
 
@@ -103,6 +104,7 @@ namespace TestDiplom.Controllers.test
             {
                 Name = model.Name,
                 OwnerId = userId,
+                SubjectId = model.SubjectId,
                 IdForView = model.IdForView
             };
             try
@@ -229,15 +231,18 @@ namespace TestDiplom.Controllers.test
 
         public async Task<TestModel> GetById(int id)
         {
-            var test = await _context.Tests.Where(t => t.Id == id).FirstOrDefaultAsync();
+            //var test = await _context.Tests.Where(t => t.Id == id).FirstOrDefaultAsync();
+            var test = await _context.Tests.Include(t => t.SubjectFk).Where(t => t.Id == id).FirstOrDefaultAsync();
 
-            var ret = new TestModel
-            {
-                Id = test.Id,
-                Name = test.Name,
-                IdForView = test.IdForView,
-                TestQuestions = GetAllTestQuestionById(test.Id)
-            };
+            var ret = new TestModel();
+
+            ret.Id = test.Id;
+            ret.Name = test.Name;
+            ret.IdForView = test.IdForView;
+            ret.SubjectId = test.SubjectId;
+            ret.SubjectName = test.SubjectFk == null ? "" : test.SubjectFk.Name;
+            ret.TestQuestions = GetAllTestQuestionById(test.Id);
+            
             return ret;
         }
 
@@ -285,13 +290,11 @@ namespace TestDiplom.Controllers.test
 
         [HttpGet]
         [Authorize]
-        [Route("GetAllForUser")]
-        //GET : /api/Test/GetAllForUser
-        public async Task<List<TestModel>> GetAllForUser()
+        [Route("GetAll")]
+        //GET : /api/Test/GetAll
+        public async Task<List<TestModel>> GetAll()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-
-            var lst = await _context.Tests.Where(t => t.OwnerId == userId).ToListAsync();
+            var lst = await _context.Tests.Include(t => t.SubjectFk).ToListAsync();
 
             var tests = new List<TestModel>();
 
@@ -301,8 +304,9 @@ namespace TestDiplom.Controllers.test
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    IdForView = item.IdForView
-                    
+                    IdForView = item.IdForView,
+                    SubjectName = item.SubjectFk.Name,
+                    AmountTestQuestions = _context.TestQuestions.Where(q => q.TestId == item.Id).Select(q => q).Count()
                 };
 
                 tests.Add(test);
@@ -311,10 +315,72 @@ namespace TestDiplom.Controllers.test
             return tests;
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("GetAllForUser")]
+        //GET : /api/Test/GetAllForUser
+        public async Task<List<TestModel>> GetAllForUser()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            var lst = await _context.Tests.Include(t => t.SubjectFk).Where(t => t.OwnerId == userId).ToListAsync();
+
+            var tests = new List<TestModel>();
+
+            foreach (var item in lst)
+            {
+                var test = new TestModel
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    IdForView = item.IdForView,
+                    SubjectName = item.SubjectFk.Name,
+                    AmountTestQuestions = _context.TestQuestions.Where(q => q.TestId == item.Id).Select(q => q).Count()
+                };
+
+                tests.Add(test);
+            }
+
+            return tests;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Student")]
+        [Route("GetAllForStudent")]
+        //GET : /api/Test/GetAllForStudent
+        public async Task<List<TestModel>> GetAllForStudent()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            var subjects = await _context.StudentSubjects.Where(s => s.StudentId == userId && s.IsSubscribe == true).ToListAsync();
+
+            var lst = new List<TestModel>();
+
+            foreach (var s in subjects)
+            {
+                var list = await _context.Tests.Include(l => l.SubjectFk).Where(l => l.SubjectId == s.SubjectId).ToListAsync();
+
+                foreach (var item in list)
+                {
+                    var test = new TestModel();
+                    test.Id = item.Id;
+                    test.Name = item.Name;
+                    test.OwnerId = item.OwnerId;
+                    test.SubjectName = item.SubjectFk.Name;
+                    test.IdForView = item.IdForView;
+                    //test.AmountTestQuestions = _context.TestQuestions.Where(q => q.TestId == item.Id).Select(q => q).Count();
+
+                    lst.Add(test);
+                }
+            }
+
+            return lst;
+        }
+
         [HttpDelete]
         [Authorize]
         [Route("Delete")]
-        //GET : /api/Test/Delete
+        //Delete : /api/Test/Delete
         public async Task Delete(int id)
         {
             var deleteItem = await _context.Tests.FirstOrDefaultAsync(t => t.Id == id);
@@ -324,6 +390,92 @@ namespace TestDiplom.Controllers.test
                 _context.Tests.Remove(deleteItem);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("CheckTest")]
+        //POST : /api/Test/CheckTest
+
+        public async Task<double> CheckTest(TestModel test)
+        {
+            var t = await _context.Tests.Where(t => t.Id == test.Id).FirstOrDefaultAsync();
+
+            var testBase = new TestModel
+            {
+                Id = t.Id,
+                Name = t.Name,
+                IdForView = t.IdForView,
+                TestQuestions = GetAllTestQuestionById(t.Id)
+            };
+
+            for (int i = 0; i < testBase.TestQuestions.Count(); i++)
+            {
+                testBase.TestQuestions[i].TestQuestionAnswer = new List<TestQuestionAnswerModel>();
+
+                var answer = _context.TestQuestionAnswers.Where(t => t.TestQuestionId == testBase.TestQuestions[i].Id && t.IsCorrect == true);
+
+                foreach (var item in answer)
+                {
+                    var a = new TestQuestionAnswerModel();
+                    a.Name = item.Name;
+                    a.Id = item.Id;
+                    a.IsCorrect = item.IsCorrect;
+                    a.IdForView = item.IdForView;
+                    a.TestQuestionId = item.TestQuestionId;
+                    testBase.TestQuestions[i].TestQuestionAnswer.Add(a);
+                }
+            }
+
+            //CheckTest
+
+            double ball = 0;
+            double b1 = 100.0/test.TestQuestions.Count();
+
+            foreach (var i in testBase.TestQuestions)
+            {
+                foreach (var j in test.TestQuestions )
+                {
+                    if (i.Name == j.Name)
+                    {
+                        double lenght = i.TestQuestionAnswer.Count();
+                        double c = 1 / lenght;
+                        double b = 0.0;
+
+                        foreach (var ii in i.TestQuestionAnswer)
+                        {
+                            foreach (var jj in j.TestQuestionAnswer)
+                            {
+                                if (ii.Name == jj.Name)
+                                {
+                                    if (ii.IsCorrect == true && jj.IsCorrect == true)
+                                    {
+                                        b += 1;
+                                    }
+                                }
+                                else if (ii.Name != jj.Name)
+                                {
+                                    var trueVar = i.TestQuestionAnswer.Any(j => jj.Name == j.Name);
+                                    if (trueVar == false && jj.IsCorrect == true)
+                                    {
+                                        b = b - c;
+                                    }
+                                }
+                            }
+                        }
+
+                        double count  = 0.0;
+                        if(b > 0)
+                            count = b / lenght;
+
+                        ball += count;
+                    }
+                }
+            }
+            ball = ball * b1;
+
+            return ball;
+
         }
     }
 }

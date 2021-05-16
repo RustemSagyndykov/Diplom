@@ -49,6 +49,7 @@ namespace TestDiplom
             options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddIdentityCore<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AuthenticationContext>();
 
             services.Configure<IdentityOptions>(options => {

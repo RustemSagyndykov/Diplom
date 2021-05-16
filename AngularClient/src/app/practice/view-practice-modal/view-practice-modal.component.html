@@ -1,0 +1,45 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>Просмотр предмета</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group" *ngIf="practice.subjectId != null">
+                        <label for="subjectName" style="font-size: 1.1rem;">Навзание предмета: </label>
+                        <input class="form-control" [(ngModel)]="practice.subjectName" name="subjectName" readonly>
+                    </div>
+
+                <div class="form-group">
+                    <label for="practiceName" style="font-size: 1.1rem;">Название практического задания: </label>
+                    <input type="text" id="practiceName" class="form-control mb-2" [(ngModel)]="practice.name" name="practiceName" required readonly/>
+                </div>
+
+                <div class="row" *ngIf="practice.practiceFiles.length != 0">
+                    <div class="col-md-12">
+                        <label style="font-size: 1.1rem;">Прикрепленные файлы: </label> 
+                    </div>
+                </div>
+                <div class="container">
+                    <ul>
+                        <li *ngFor="let file of practice.practiceFiles">
+                            <a>
+                                {{file.fileName}}
+                                <app-download [fileName]="file.fileName"></app-download>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-md btn-outline-primary blue" (click)="close()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+</div>

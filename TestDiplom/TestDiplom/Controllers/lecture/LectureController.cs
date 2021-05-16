@@ -50,6 +50,9 @@ namespace TestDiplom.Controllers.lecture
 
             updateLecture.Name = model.Name;
             updateLecture.Content = model.Content;
+            updateLecture.TestId = model.TestId;
+            updateLecture.SubjectId = model.SubjectId;
+            updateLecture.PracticeId = model.PracticeId;
 
             await DeleteLecFiles(model.Id);
 
@@ -66,7 +69,9 @@ namespace TestDiplom.Controllers.lecture
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-            var list = _context.Lectures.Where(l => l.OwnerId == userId);
+            var list = _context.Lectures
+                .Include(l => l.OwnerFk)
+                .Include(l => l.SubjectFk).Where(l => l.OwnerId == userId);
 
             var lst = new List<LectureModel>();
 
@@ -77,9 +82,76 @@ namespace TestDiplom.Controllers.lecture
                 lecture.Id = item.Id;
                 lecture.Name = item.Name;
                 lecture.OwnerId = item.OwnerId;
+                lecture.SubjectName = item.SubjectFk.Name;
+                lecture.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
                 lecture.LectureFiles = GetAllLectureFilesById(item.Id);
 
                 lst.Add(lecture);
+            }
+
+            return lst;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("GetAllLecturesForAdmin")]
+        //GET : /api/Lecture/GetAllLecturesForAdmin
+        public async  Task<List<LectureModel>> GetAllLecturesForAdmin()
+        {
+            var list = await _context.Lectures
+                .Include(l => l.OwnerFk)
+                .Include(l => l.SubjectFk).ToListAsync();
+
+            var lst = new List<LectureModel>();
+
+            foreach (var item in list)
+            {
+                var lecture = new LectureModel();
+
+                lecture.Id = item.Id;
+                lecture.Name = item.Name;
+                lecture.OwnerId = item.OwnerId;
+                lecture.SubjectName = item.SubjectFk.Name;
+                //lecture.OwnerName = item.OwnerFk.FullName;
+                lecture.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
+                lecture.LectureFiles = GetAllLectureFilesById(item.Id);
+
+                lst.Add(lecture);
+            }
+
+            return lst;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Student")]
+        [Route("GetAllLecturesForStudent")]
+        //GET : /api/Lecture/GetAllLecturesForStudent
+        public async Task<List<LectureModel>> GetAllLecturesForStudent()
+        {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+
+            var subjects = await _context.StudentSubjects.Where(s => s.StudentId == userId && s.IsSubscribe == true).ToListAsync();
+
+            var lst = new List<LectureModel>();
+
+            foreach (var s in subjects)
+            {
+                var list = await _context.Lectures.Include(l => l.SubjectFk).Where(l => l.SubjectId == s.SubjectId).ToListAsync();
+
+                foreach (var item in list)
+                {
+                    var lecture = new LectureModel();
+
+                    lecture.Id = item.Id;
+                    lecture.Name = item.Name;
+                    lecture.OwnerId = item.OwnerId;
+                    lecture.SubjectName = item.SubjectFk.Name;
+                    lecture.PracticeId = item.PracticeId;
+                    lecture.TestId = item.TestId;
+                    lecture.LectureFiles = GetAllLectureFilesById(item.Id);
+
+                    lst.Add(lecture);
+                }
             }
 
             return lst;
@@ -94,16 +166,27 @@ namespace TestDiplom.Controllers.lecture
             var id = Convert.ToInt32(Id);
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-            var lec = _context.Lectures.Where(l => l.Id == id).FirstOrDefault();
+            //var lec = _context.Lectures.Where(l => l.Id == id).FirstOrDefault();
 
-            var lecture = new LectureModel
-            {
-                Id = lec.Id,
-                Name = lec.Name,
-                Content = lec.Content,
-                OwnerId = lec.OwnerId,
-                LectureFiles = GetAllLectureFilesById(lec.Id)
-            };
+            var lec = _context.Lectures
+                .Include(l => l.TestFk)
+                .Include(l => l.SubjectFk)
+                .Include(l => l.PracticeFk)
+                .Where(l => l.Id == id).FirstOrDefault();
+
+            var lecture = new LectureModel();
+
+            lecture.Id = lec.Id;
+            lecture.Name = lec.Name;
+            lecture.Content = lec.Content;
+            lecture.OwnerId = lec.OwnerId;
+            lecture.TestId = lec.TestId;
+            lecture.TestName =lec.TestFk == null ? "" : lec.TestFk.Name;
+            lecture.PracticeId = lec.PracticeId;
+            lecture.PracticeName = lec.PracticeFk == null ? "" : lec.PracticeFk.Name;
+            lecture.SubjectId = lec.SubjectId;
+            lecture.SubjectName = lec.SubjectFk == null ? "" : lec.SubjectFk.Name;
+            lecture.LectureFiles = GetAllLectureFilesById(lec.Id);
 
             return lecture;
         }
@@ -169,6 +252,9 @@ namespace TestDiplom.Controllers.lecture
                 Name = model.Name,
                 Content = model.Content,
                 OwnerId = userId,
+                TestId = model.TestId,
+                PracticeId = model.PracticeId,
+                SubjectId = model.SubjectId
             };
             try
             {

@@ -10,6 +10,13 @@ input.form-control,input.form-control:focus{
 
 }
 
+select.form-control,select.form-control:focus{
+    background-color: #636b7b;
+    color: #fff;
+    border: 1px solid #636b7b;
+
+}
+
 input.form-control:focus{
     box-shadow: none;
 }

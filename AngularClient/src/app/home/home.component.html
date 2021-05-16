@@ -31,35 +31,121 @@
         </a>
       </div>
       <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-        <li nz-submenu nzOpen nzTitle="Общее" nzIcon="dashboard">
+
+        <!-- Open -->
+        <!-- <li nz-submenu nzOpen nzTitle="Общее" nzIcon="dashboard"> -->
+        <!-- Open -->
+
+          <li nz-submenu nzTitle="Общее" nzIcon="dashboard">
           <ul>
-            <li nz-menu-item nzMatchRouter>
+            <!-- <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/forbidden">Forbidden</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
+            </li> -->
+            <!-- <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/testList">Тест</a>
-            </li>
-            <li nz-menu-item nzMatchRouter>
-              <a >Тестирование</a>
-            </li>
+            </li> -->
+            <!-- <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/testing">Тестирование</a>
+            </li> -->
             <li nz-menu-item nzMatchRouter>
                 <a routerLink="/home/cabinet">Личный кабинет</a>
             </li>
-            <li nz-menu-item nzMatchRouter>
+            <!-- <li nz-menu-item nzMatchRouter>
               <a>Статистика</a>
-            </li>
+            </li> -->
             <!-- <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/lecture">Лекции</a>
             </li> -->
-            <li nz-menu-item nzMatchRouter>
+            <!-- <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/lectureList">Лекции</a>
+            </li> -->
+            <!-- <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/subject">Предмет</a>
+            </li> -->
+            <!-- <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/practice">Практические задания</a>
+            </li> -->
+            <!-- <li nz-menu-item nzMatchRouter class="pb-2 pt-2" style="white-space: normal !important; height: auto; line-height: 1.5;" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/studentPracticeListForTeacher">Практические задания студентов</a>
+            </li> -->
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Предметы" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+          <ul>
+            <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/subject">Предмет</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Практические задания" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+          <ul>
+            <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/practice">Практические задания</a>
+            </li>
+            <li nz-menu-item nzMatchRouter class="pb-2 pt-2" style="white-space: normal !important; height: auto; line-height: 1.5;" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/studentPracticeListForTeacher">Практические задания студентов</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Лекции" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+          <ul>
+            <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/lectureList">Лекции</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzOpen nzTitle="Админка" nzIcon="form">
+        <li nz-submenu nzTitle="Тест" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+          <ul>
+            <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+              <a routerLink="/home/testList">Тест</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Предметы" nzIcon="form" *ngIf="role==userRoles.Student">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a>Админка</a>
+              <a routerLink="/home/subject">Весь список предметов</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/studentSubject">Мои предметы</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Лекции" nzIcon="form" *ngIf="role==userRoles.Student">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/studentLecture">Мои Лекции</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu  nzTitle="Тесты" nzIcon="form" *ngIf="role==userRoles.Student">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/studentTest">Мои Тесты</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Практичесие задания" nzIcon="form" *ngIf="role==userRoles.Student">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/studentPracticeList">Мои практические задания</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Админка" nzIcon="security-scan" *ngIf="role==userRoles.Admin">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/adminpanel">Админка</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/admin/users">Пользователи</a>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Статистика" nzIcon="form">
+          <ul>
+            <li nz-menu-item nzMatchRouter>
+              <a>Статистика</a>
             </li>
           </ul>
         </li>
@@ -74,8 +160,8 @@
                  [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
               ></i>
           </span>
-          <div class="float-right mr-2">
-            <button class="btn btn-outline-dark" (click)="onLogout()">Logout</button>
+          <div class="float-right mr-4">
+            <button class="btn btn-outline-dark" (click)="onLogout()"><i class="fa fa-sign-out"></i> Выйти</button>
           </div>
         </div>
       </nz-header>

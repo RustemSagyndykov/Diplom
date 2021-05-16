@@ -1,0 +1,76 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #practiceForm="ngForm" novalidate autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="practice.id">Редактирование практического задания</span>
+                        <span *ngIf="!practice.id">Создание практического задания</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="font-size: 1.1rem;">Прикрепить к предмету. Название предмета: *</label>
+                                <div class="input-group">
+                                    <input class="form-control" [(ngModel)]="practice.subjectName" (click)="openSelectSubjectModal()" readonly name="subjectName" required>
+                                
+                                    <span class="input-group-btn">
+                                        <button (click)="openSelectSubjectModal()" class="btn btn-outline-primary" type="submit"> <i
+                                                class="fa fa-search"></i> Выбрать</button>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button (click)="deleteSubject()" class="btn btn-outline-danger" type="submit"> <i class="fa fa-trash"></i>
+                                            Удалить</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="practiceName" style="font-size: 1.1rem;">Название практического задания: *</label>
+                        <input type="text" id="practiceName" class="form-control mb-2" [(ngModel)]="practice.name" name="practiceName" required />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="font-size: 1.1rem;">Загрузить методические указания: *</label>
+                                <app-file-upload  (onUploadFinished)="uploadFinished($event)" (fileName)="getFileName($event)"></app-file-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="practice.practiceFiles.length != 0">
+                        <div class="col-md-12">
+                            <label style="font-size: 1.1rem;">Прикрепленные файлы: </label> 
+                        </div>
+                    </div>
+                    <div class="container">
+                        <ul>
+                            <li *ngFor="let file of practice.practiceFiles">
+                                <a>
+                                    {{file.fileName}}
+                                    <app-download [fileName]="file.fileName"></app-download>
+                                    <button *ngIf="!viewMode" class="btn btn-outline-danger ml-3" (click)="delete(file.fileName)"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-outline-danger" (click)="close()">Закрыть</button>
+                    <button type="submit" class="btn btn-outline-primary blue" [disabled]="!practiceForm.form.valid" [buttonBusy]="saving" [busyText]="saving" (click)="save()"><i class="fa fa-save"></i> <span> Сохранить</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<app-subject-lookup-table-modal #subjectLookupTableModal (modalSave)="selectSubject()"></app-subject-lookup-table-modal>
+

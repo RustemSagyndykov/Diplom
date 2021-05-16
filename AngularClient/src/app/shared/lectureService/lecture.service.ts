@@ -23,6 +23,14 @@ export class LectureService {
     return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForUser');
   }
 
+  getAllForAdmin(){
+    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForAdmin');
+  }
+
+  getAllForStudent(){
+    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForStudent');
+  }
+
   getById(Id){
     return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesById',{params: {id:Id}});
   }

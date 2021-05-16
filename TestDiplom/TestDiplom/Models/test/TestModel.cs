@@ -12,6 +12,9 @@ namespace TestDiplom.Models.test
         public int IdForView { get; set; }
         public string Name { get; set; }
         public string OwnerId { get; set; }
+        public int? SubjectId { get; set; }
+        public string SubjectName { get; set; }
+        public int AmountTestQuestions { get; set; }
         public IList<TestQuestionModel> TestQuestions { get; set; }
     }
 }

@@ -1,42 +1,49 @@
-
+<img src="/assets/img/single_user.png" class="mx-auto d-block">
         <form [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
             <div class="form-group required">
-                <label>Username</label>
+                <label>Название учетной записи</label>
                 <input class="form-control" formControlName="UserName">
                 <label class = "text-danger" *ngIf="service.formModel.get('UserName').touched && 
-                service.formModel.get('UserName').errors?.required">This field is mandatory.</label>
+                service.formModel.get('UserName').errors?.required">Данное поле обязатольно для заполнения.</label>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Email</label>
                 <input class="form-control" formControlName="Email">
                 <label class = "text-danger" *ngIf="service.formModel.get('Email').touched && 
                 service.formModel.get('Email').errors?.email">Invalid email address.</label>
-            </div>
-            <div class="form-group">
+            </div> -->
+            <!-- <div class="form-group">
                 <label>Full Name</label>
                 <input class="form-control" formControlName="FullName">
-            </div>
+            </div> -->
             <div formGroupName="Passwords">
                 <div class="form-group required">
-                    <label>Password</label>
+                    <label>Пароль</label>
                     <input type="password" class="form-control" formControlName="Password">
                     <label class = "text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && 
-                        service.formModel.get('Passwords.Password').errors?.required">This field is mandatory.</label>
+                        service.formModel.get('Passwords.Password').errors?.required">Данное поле обязатольно для заполнения.</label>
                     <label class = "text-danger" *ngIf="service.formModel.get('Passwords.Password').touched && 
-                        service.formModel.get('Passwords.Password').errors?.minlength">Minimum 4 characters required.</label>
+                        service.formModel.get('Passwords.Password').errors?.minlength">Минимальная длина 4 символа.</label>
                 </div>
                 <div class="form-group required">
-                    <label>Confirm Password</label>
+                    <label>Подтвердить пароль</label>
                     <input type="password" class="form-control" formControlName="ConfirmPassword">
                     <label class = "text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && 
-                        service.formModel.get('Passwords.ConfirmPassword').errors?.required">This field is mandatory.</label>
+                        service.formModel.get('Passwords.ConfirmPassword').errors?.required">Данное поле обязатольно для заполнения.</label>
                     <label class = "text-danger" *ngIf="service.formModel.get('Passwords.ConfirmPassword').touched && 
-                        service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Confirm password does not match.</label>
+                        service.formModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Пароли не совпадают.</label>
                 </div>
+            </div>
+            <div class="form-group required">
+                <label>Роль пользователя</label>
+                <select formControlName="Role"  class="form-control">
+                    <option style="font-size: 1.2rem;" value="Student">Студент</option>
+                    <option style="font-size: 1.2rem;" value="Teacher">Преподователь</option>
+                </select>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8 offset-md-2">
-                    <button type="submit" class="btn btn-lg btn-block" [disabled]="!service.formModel.valid">Sign Up</button>
+                    <button type="submit" class="btn btn-lg btn-block" [disabled]="!service.formModel.valid">Зарегистрироваться</button>
                 </div>
             </div>
         </form>

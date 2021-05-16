@@ -221,6 +221,34 @@ namespace TestDiplom.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("TestDiplom.Models.Comment.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("CommentContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("StudentPracticeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("StudentPracticeId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("TestDiplom.Models.Lecture.Lecture", b =>
                 {
                     b.Property<int>("Id")
@@ -237,9 +265,24 @@ namespace TestDiplom.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("PracticeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TestId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("PracticeId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.HasIndex("TestId");
 
                     b.ToTable("Lectures");
                 });
@@ -267,6 +310,179 @@ namespace TestDiplom.Migrations
                     b.ToTable("LectureFiles");
                 });
 
+            modelBuilder.Entity("TestDiplom.Models.Practice.Practice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Practices");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Practice.PracticeFiles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PracticeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PracticeId");
+
+                    b.ToTable("PracticeFiles");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentPractice.StudentPractice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("IsAccept")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRevision")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PracticeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PracticeScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PracticeId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentPractices");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentPractice.StudentPracticeFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentPracticeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentPracticeId");
+
+                    b.ToTable("StudentPracticeFiles");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentSubject.StudentSubject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("IsSubscribe")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("StudentSubjects");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentTesting.StudentTesting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<bool>("IsTested")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TestScore")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("StudentTestings");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Subject.Subject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subjects");
+                });
+
             modelBuilder.Entity("TestDiplom.Models.test.Test", b =>
                 {
                     b.Property<int>("Id")
@@ -283,9 +499,14 @@ namespace TestDiplom.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Tests");
                 });
@@ -343,11 +564,23 @@ namespace TestDiplom.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("FullName")
+                    b.Property<DateTime?>("DateBirthday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Patronymic")
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -403,13 +636,51 @@ namespace TestDiplom.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TestDiplom.Models.Comment.Comment", b =>
+                {
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "OwnerFk")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.HasOne("TestDiplom.Models.StudentPractice.StudentPractice", "StudentPracticeFk")
+                        .WithMany()
+                        .HasForeignKey("StudentPracticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OwnerFk");
+
+                    b.Navigation("StudentPracticeFk");
+                });
+
             modelBuilder.Entity("TestDiplom.Models.Lecture.Lecture", b =>
                 {
                     b.HasOne("TestDiplom.Models.ApplicationUser", "OwnerFk")
                         .WithMany()
                         .HasForeignKey("OwnerId");
 
+                    b.HasOne("TestDiplom.Models.Practice.Practice", "PracticeFk")
+                        .WithMany()
+                        .HasForeignKey("PracticeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("TestDiplom.Models.Subject.Subject", "SubjectFk")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("TestDiplom.Models.test.Test", "TestFk")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("OwnerFk");
+
+                    b.Navigation("PracticeFk");
+
+                    b.Navigation("SubjectFk");
+
+                    b.Navigation("TestFk");
                 });
 
             modelBuilder.Entity("TestDiplom.Models.Lecture.LectureFile", b =>
@@ -423,13 +694,109 @@ namespace TestDiplom.Migrations
                     b.Navigation("LectureFk");
                 });
 
+            modelBuilder.Entity("TestDiplom.Models.Practice.Practice", b =>
+                {
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "OwnerFk")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.HasOne("TestDiplom.Models.Subject.Subject", "SubjectFk")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("OwnerFk");
+
+                    b.Navigation("SubjectFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.Practice.PracticeFiles", b =>
+                {
+                    b.HasOne("TestDiplom.Models.Practice.Practice", "PracticeFk")
+                        .WithMany()
+                        .HasForeignKey("PracticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PracticeFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentPractice.StudentPractice", b =>
+                {
+                    b.HasOne("TestDiplom.Models.Practice.Practice", "PracticeFk")
+                        .WithMany()
+                        .HasForeignKey("PracticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "StudentFk")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("PracticeFk");
+
+                    b.Navigation("StudentFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentPractice.StudentPracticeFile", b =>
+                {
+                    b.HasOne("TestDiplom.Models.StudentPractice.StudentPractice", "StudentPracticeFk")
+                        .WithMany()
+                        .HasForeignKey("StudentPracticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentPracticeFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentSubject.StudentSubject", b =>
+                {
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "SrudentFk")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("TestDiplom.Models.Subject.Subject", "SubjectFk")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SrudentFk");
+
+                    b.Navigation("SubjectFk");
+                });
+
+            modelBuilder.Entity("TestDiplom.Models.StudentTesting.StudentTesting", b =>
+                {
+                    b.HasOne("TestDiplom.Models.ApplicationUser", "StudentFk")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("TestDiplom.Models.test.Test", "TestFk")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentFk");
+
+                    b.Navigation("TestFk");
+                });
+
             modelBuilder.Entity("TestDiplom.Models.test.Test", b =>
                 {
                     b.HasOne("TestDiplom.Models.ApplicationUser", "OwnerFk")
                         .WithMany()
                         .HasForeignKey("OwnerId");
 
+                    b.HasOne("TestDiplom.Models.Subject.Subject", "SubjectFk")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("OwnerFk");
+
+                    b.Navigation("SubjectFk");
                 });
 
             modelBuilder.Entity("TestDiplom.Models.test.TestQuestion", b =>

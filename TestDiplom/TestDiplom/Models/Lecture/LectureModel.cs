@@ -12,7 +12,13 @@ namespace TestDiplom.Models.Lecture
         public string Content { get; set; }
 
         public string OwnerId { get; set; }
-
+        public string OwnerName { get; set; }
+        public int? TestId { get; set; }
+        public string TestName { get; set; }
+        public int? SubjectId { get; set; }
+        public string SubjectName {get;set;}
+        public int? PracticeId { get; set; }
+        public string PracticeName { get; set; }
         public IList<LectureFile> LectureFiles { get; set; }
 
     }

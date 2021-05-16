@@ -15,5 +15,8 @@ namespace TestDiplom.Models.test
 
         [ForeignKey("OwnerId")]
         public ApplicationUser OwnerFk { get; set; }
+        public int? SubjectId { get; set; }
+        [ForeignKey("SubjectId")]
+        public Subject.Subject SubjectFk { get; set; }
     }
 }

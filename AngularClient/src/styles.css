@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
  body{
     /* background-color: #04c582; */
-    background-image: url("assets\img\wallhaven-r7jr7m.jpg");
-    background-repeat: no-repeat;
+    background-color: #F0F2F5;
+    /* background-image: url("assets\img\wallhaven-r7jr7m.jpg");
+    background-repeat: no-repeat; */
 }
 /*
 input.form-control,input.form-control:focus{

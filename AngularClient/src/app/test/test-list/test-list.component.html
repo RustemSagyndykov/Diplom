@@ -22,29 +22,29 @@
             </th>
             <th pSortableColumn="name">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
+                    Название Теста
                     <p-sortIcon field="name"></p-sortIcon>
                     <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
-            <th pSortableColumn="name">
+            <th pSortableColumn="subjectName">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
-                    <p-sortIcon field="name"></p-sortIcon>
-                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                    Название предмета
+                    <p-sortIcon field="subjectName"></p-sortIcon>
+                    <p-columnFilter type="text" field="subjectName" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
             
-            <th pSortableColumn="name">
+            <th pSortableColumn="amountTestQuestions">
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Название
-                    <p-sortIcon field="name"></p-sortIcon>
-                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                    Количество вопросов
+                    <p-sortIcon field="amountTestQuestions"></p-sortIcon>
+                    <p-columnFilter type="text" field="amountTestQuestions" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
             <th>
                 <div class="p-d-flex p-jc-between p-ai-center">
-                    Прикрепленные файлы
+                    Прохождение теста
                 </div>
             </th>
             
@@ -61,7 +61,7 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li>
                             <a href="javascript:;" class="dropdown-item" style="font-size: small;"
-                            (click)="viewLecture(record.id)">Просмотр</a>
+                            (click)="viewTestModal.show(record.id)">Просмотр</a>
                         </li>
                         <div class="dropdown-divider"></div>
                         <li>
@@ -78,19 +78,16 @@
                 </div>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
+                <span class="p-column-title">{{record.name}}</span>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
+                <span class="p-column-title">{{record.subjectName}}</span>
+            </td>
+            <td class="text-center">
+                <span class="p-column-title">{{record.amountTestQuestions}}</span>
             </td>
             <td>
-                <span class="p-column-title">Name</span>
-                {{record.name}}
-            </td>
-            <td>
-                <button class="btn btn-sm btn-outline-primary" (click)="viewLectureeModal.show(record)"><i class="fa fa-eye"></i>Просмотр файлов</button>
+                <button class="btn btn-sm btn-outline-primary" (click)="testing(record.id)"><i class="fa fa-tasks"></i> Пройи тестирование</button>
             </td>
             
         </tr>
@@ -103,5 +100,5 @@
 </p-table>
 
 <app-create-or-edit-test #createOrEditTestModal (modalSave)="getTests($event)"></app-create-or-edit-test>
-
+<app-view-test-modal #viewTestModal></app-view-test-modal>
 
