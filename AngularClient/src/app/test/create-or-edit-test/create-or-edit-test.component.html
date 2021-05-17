@@ -1,7 +1,7 @@
 <div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form *ngIf="active" #testForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+            <form *ngIf="active" #testForm="ngForm" novalidate autocomplete="off">
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="test.id">Редактирование теста</span>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-outline-danger" (click)="close()">Закрыть</button>
-                    <button type="submit" class="btn btn-outline-primary blue" [disabled]="!testForm.form.valid" [buttonBusy]="saving" [busyText]="saving"><i class="fa fa-save"></i> <span> Сохранить</span></button>
+                    <button type="submit" class="btn btn-outline-primary blue" (click)="save()" [disabled]="!testForm.form.valid" [buttonBusy]="saving" [busyText]="saving"><i class="fa fa-save"></i> <span> Сохранить</span></button>
                 </div>
             </form>
         </div>
