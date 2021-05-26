@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'src/app/models/Subject';
+import { URI } from '../../models/URI';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class SubjectService {
 
   constructor(private http:HttpClient) { }
 
-  readonly BaseURI = 'https://localhost:44352/api';
+  //readonly BaseURI = 'https://localhost:44352/api';
+  private readonly BaseURI = URI.BaseURI;
 
   getAll(){
     return this.http.get(this.BaseURI + '/Subject/GetAll');

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Test } from 'src/app/models/Test';
+import { URI } from '../../models/URI';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class TestService {
 
   constructor(private http:HttpClient) { }
 
-  readonly BaseURI = 'https://localhost:44352/api';
+  //readonly BaseURI = 'https://localhost:44352/api';
+  private readonly BaseURI = URI.BaseURI;
 
   Create(test:Test){
     return this.http.post(this.BaseURI + '/Test/CreateTest',test);

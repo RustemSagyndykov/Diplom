@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Lecture} from '../../models/Lecture';
+import { URI } from '../../models/URI';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class LectureService {
 
   constructor(private http:HttpClient) { }
 
-  readonly BaseURI = 'https://localhost:44352/api';
+  //readonly BaseURI = 'https://localhost:44352/api';
+  private readonly BaseURI = URI.BaseURI;
 
   createLecture(lecture:Lecture){
     return this.http.post(this.BaseURI + '/Lecture/CreateLecture',lecture);

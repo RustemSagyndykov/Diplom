@@ -69,6 +69,10 @@ import { StudentPracticeListForTeacherComponent } from './practice/student-pract
 import { CommentService } from './shared/commentService/comment.service';
 import { CommentComponent } from './comment/comment.component';
 import { StudentSubjectStatisticModalComponent } from './subject/student-subject-statistic-modal/student-subject-statistic-modal.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { StatisticService } from './shared/statisticService/statistic.service';
+import { ChangePasswordModalComponent } from './admin/users/change-password-modal/change-password-modal.component';
 
 registerLocaleData(ru);
 
@@ -112,7 +116,9 @@ registerLocaleData(ru);
     StudentPracticeComponent,
     StudentPracticeListForTeacherComponent,
     CommentComponent,
-    StudentSubjectStatisticModalComponent
+    StudentSubjectStatisticModalComponent,
+    StatisticsComponent,
+    ChangePasswordModalComponent
   ],
   imports: [
     BrowserModule,
@@ -128,6 +134,7 @@ registerLocaleData(ru);
     BrowserAnimationsModule,
     AngularEditorModule,
     TableModule,
+    NgxChartsModule,
     ModalModule.forRoot(),
     ToastrModule.forRoot(),
     FormsModule
@@ -142,7 +149,8 @@ registerLocaleData(ru);
     StudentSubjectServiceService,
     StudentTestingService,
     StudentPracticeService,
-    CommentService,{
+    CommentService,
+    StatisticService,{
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true

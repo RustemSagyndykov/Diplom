@@ -76,7 +76,7 @@
 </div>
 <div class="container">
     <ul>
-        <li *ngFor="let file of lectureFiles">
+        <li *ngFor="let file of lectureFiles" class="mb-2">
             <a>
                 {{file.fileName}}
                 <app-download [fileName]="file.fileName"></app-download>

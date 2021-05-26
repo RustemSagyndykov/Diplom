@@ -4,6 +4,7 @@ import { UserModel } from '../../models/UserModel';
 import { ToastrService } from 'ngx-toastr';
 import { CreateOrEditUsersModalComponent } from './create-or-edit-users-modal/create-or-edit-users-modal.component';
 import { ViewUsersModalComponent } from './view-users-modal/view-users-modal.component';
+import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
 
 @Component({
   selector: 'app-users',
@@ -17,6 +18,7 @@ export class UsersComponent implements OnInit {
   constructor(private service:UserService,private toastr: ToastrService) { }
   @ViewChild('createOrEditUsersModal', { static: true }) createOrEditUsersModal: CreateOrEditUsersModalComponent;
   @ViewChild('viewUsersModal', { static: true }) viewUsersModal: ViewUsersModalComponent; 
+  @ViewChild('changePasswordModal', { static: true }) changePasswordModal: ChangePasswordModalComponent;
 
   ngOnInit(): void {
     this.getAll();
@@ -30,6 +32,9 @@ export class UsersComponent implements OnInit {
   }
 
   getUser(){
+    this.getAll();
+  }
+  getPassword(){
     this.getAll();
   }
 

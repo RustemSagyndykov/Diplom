@@ -216,6 +216,46 @@ namespace TestDiplom.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route("ChangPassword")]
+        //POST : /api/UserProfile/ChangPassword
+        public async Task<IActionResult> ChangPasswordForUser(ChangePasswordModel model)
+        {
+            string userId = "";
+
+            if (model.Id != null)
+            {
+                userId = model.Id;
+            }
+            else 
+            {
+                userId = User.Claims.First(c => c.Type == "UserID").Value;
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                try
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                    return Ok(result);
+                }
+
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                return BadRequest(new { message = "UserName not Founded" });
+            }
+
+        }
+
         [HttpGet]
         [Authorize(Roles = "Teacher")]
         [Route("ForTeacher")]

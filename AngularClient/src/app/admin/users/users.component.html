@@ -96,6 +96,12 @@
                         </li>
                         <div class="dropdown-divider"></div>
                         <li>
+                            <a href="javascript:;" 
+                                class="dropdown-item" style="font-size: small;"
+                                (click)="changePasswordModal.show(record.id)">Изменить пароль</a>
+                        </li>
+                        <div class="dropdown-divider"></div>
+                        <li>
                             <a class="dropdown-item" href="javascript:;" style="font-size: small;"
                             (click)="deleteUser(record.id)">Удалить</a>
                         </li>
@@ -132,3 +138,4 @@
 
 <app-create-or-edit-users-modal #createOrEditUsersModal (modalSave)="getUser()"></app-create-or-edit-users-modal>
 <app-view-users-modal #viewUsersModal></app-view-users-modal>
+<app-change-password-modal #changePasswordModal (modalSave)="getPassword()"></app-change-password-modal>

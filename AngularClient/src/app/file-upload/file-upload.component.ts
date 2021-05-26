@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter,Output,Input } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import { URI } from '../models/URI';
 
 @Component({
   selector: 'app-file-upload',
@@ -14,6 +15,8 @@ export class FileUploadComponent implements OnInit {
   @Output() public onUploadFinished = new EventEmitter();
   @Output() fileName = new EventEmitter<string>();
   @Input() ButtonName: string = "Загруить файл";
+
+  private readonly BaseURI = URI.BaseURI;
 
   constructor(private http: HttpClient) { }
 
@@ -30,7 +33,8 @@ export class FileUploadComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
     
-    this.http.post('https://localhost:44352/api/upload', formData, {reportProgress: true, observe: 'events'})
+    //this.http.post('https://localhost:44352/api/upload', formData, {reportProgress: true, observe: 'events'})
+    this.http.post(this.BaseURI + '/upload', formData, {reportProgress: true, observe: 'events'})
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);

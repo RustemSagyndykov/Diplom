@@ -1,8 +1,10 @@
 <div class="row">
     <div class="col-md-12">
+        <button *ngIf="!editMode" class="btn btn-outline-primary px-3 py-2 float-right ml-3" (click)="changePassword()"><i class="fa fa-key"></i> Изменить пароль</button>
         <button *ngIf="!editMode" class="btn btn-outline-success px-3 py-2 float-right" (click)="edit()"><i class="fa fa-edit"></i> Редакировать</button>
     </div>
     <div class="col-md-12">
+        <button *ngIf="editMode" class="btn btn-outline-primary px-3 py-2 float-right ml-3" (click)="changePassword()"><i class="fa fa-key"></i> Изменить пароль</button>
         <button *ngIf="editMode" class="btn btn-outline-danger px-3 py-2 float-right" (click)="undoEdit()"><i class="fa fa-undo"></i> Отменить Редакирование</button>
     </div>
     <div class="col-lg-12 my-2 pb-10">
@@ -116,4 +118,6 @@
         </div>
     </div>
 </div> -->
+
+<app-change-password-modal #changePasswordModal></app-change-password-modal>
 

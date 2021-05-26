@@ -36,7 +36,7 @@
         <!-- <li nz-submenu nzOpen nzTitle="Общее" nzIcon="dashboard"> -->
         <!-- Open -->
 
-          <li nz-submenu nzTitle="Общее" nzIcon="dashboard">
+          <li nz-submenu nzTitle="Общее" nzIcon="home">
           <ul>
             <!-- <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/forbidden">Forbidden</a>
@@ -49,6 +49,9 @@
             </li> -->
             <li nz-menu-item nzMatchRouter>
                 <a routerLink="/home/cabinet">Личный кабинет</a>
+            </li>
+            <li nz-menu-item nzMatchRouter>
+              <a routerLink="/home/statistics">Статистика</a>
             </li>
             <!-- <li nz-menu-item nzMatchRouter>
               <a>Статистика</a>
@@ -70,14 +73,14 @@
             </li> -->
           </ul>
         </li>
-        <li nz-submenu nzTitle="Предметы" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+        <li nz-submenu nzTitle="Предметы" nzIcon="menu" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
           <ul>
             <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/subject">Предмет</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Практические задания" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+        <li nz-submenu nzTitle="Практические задания" nzIcon="edit" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
           <ul>
             <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/practice">Практические задания</a>
@@ -87,14 +90,14 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Лекции" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+        <li nz-submenu nzTitle="Лекции" nzIcon="book" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
           <ul>
             <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/lectureList">Лекции</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Тест" nzIcon="form" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+        <li nz-submenu nzTitle="Тест" nzIcon="check-circle" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
           <ul>
             <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
               <a routerLink="/home/testList">Тест</a>
@@ -111,49 +114,49 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Лекции" nzIcon="form" *ngIf="role==userRoles.Student">
+        <li nz-submenu nzTitle="Лекции" nzIcon="book" *ngIf="role==userRoles.Student">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/studentLecture">Мои Лекции</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu  nzTitle="Тесты" nzIcon="form" *ngIf="role==userRoles.Student">
+        <li nz-submenu  nzTitle="Тесты" nzIcon="check-circle" *ngIf="role==userRoles.Student">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/studentTest">Мои Тесты</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Практичесие задания" nzIcon="form" *ngIf="role==userRoles.Student">
+        <li nz-submenu nzTitle="Практичесие задания" nzIcon="edit" *ngIf="role==userRoles.Student">
           <ul>
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/studentPracticeList">Мои практические задания</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Админка" nzIcon="security-scan" *ngIf="role==userRoles.Admin">
+        <li nz-submenu nzTitle="Админ" nzIcon="security-scan" *ngIf="role==userRoles.Admin">
           <ul>
-            <li nz-menu-item nzMatchRouter>
+            <!-- <li nz-menu-item nzMatchRouter>
               <a routerLink="/adminpanel">Админка</a>
-            </li>
+            </li> -->
             <li nz-menu-item nzMatchRouter>
               <a routerLink="/home/admin/users">Пользователи</a>
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Статистика" nzIcon="form">
+        <!-- <li nz-submenu nzTitle="Статистика" nzIcon="form">
           <ul>
             <li nz-menu-item nzMatchRouter>
-              <a>Статистика</a>
+              <a routerLink="/home/statistics">Статистика</a>
             </li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </nz-sider>
     <nz-layout>
       <nz-header>
-        <div class="app-header">
+        <div class="app-header"  (click)="Change()">
           <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
               <i class="trigger"
                  nz-icon

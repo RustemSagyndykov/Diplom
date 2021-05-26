@@ -36,6 +36,12 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  Change(): void {
+    setTimeout(_ => {
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
+
   getUserRole(){
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
     var userRole = payLoad.role;

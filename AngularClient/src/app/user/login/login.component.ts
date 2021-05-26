@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if(localStorage.getItem('token') != null)
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/home/statistics');
   }
 
   onSubmit(form:NgForm){
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
             localStorage.removeItem('token');
             this.toastr.error('Blocked','User is blocked');
           }else{
-            this.router.navigateByUrl('/home');
+            this.router.navigateByUrl('/home/statistics');
           }
         });
       },

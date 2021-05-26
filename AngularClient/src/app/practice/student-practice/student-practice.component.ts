@@ -127,4 +127,20 @@ export class StudentPracticeComponent implements OnInit {
       this.router.navigate(['/home/studentPracticeList']);
     }
   }
+
+  onChangeScore() {
+    if(this.studentPractice.practiceScore == null){
+      this.studentPractice.practiceScore = 0;
+    }
+    let str: string = this.studentPractice.practiceScore.toString();
+    if (str.length > 2 && Number(str) > 100) {
+      //str = str.slice(0, 3);
+      this.studentPractice.practiceScore = 0;
+      //if(Number(str) > 100){
+        this.studentPractice.practiceScore = 100;
+      // }else{
+      //   this.studentPractice.practiceScore = Number(str);
+      // }
+    }
+  }
 }

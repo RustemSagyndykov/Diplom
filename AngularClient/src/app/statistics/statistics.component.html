@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pie-chart-parent" class="chart-wrapper" style="margin-right: -1rem;">
+                    <ngx-charts-number-card [scheme]="colorScheme" [animations]="animations" [results]="statisticList"
+                        [cardColor]="cardColor">
+                    </ngx-charts-number-card>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pie-chart-parent" class="chart-wrapper" style="max-height: 55vh">
+                    <ngx-charts-pie-chart style="height: 100vh;" [scheme]="colorScheme" [results]="statisticList"
+                        [gradient]="gradient" [legend]="showLegend" [legendTitle]="legendTitle"
+                        [animations]="animations" [legendPosition]="legendPosition" [labels]="showLabels"
+                        [doughnut]="isDoughnut">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
