@@ -25,6 +25,18 @@ div.form-group label:not(.text-danger){
     font-weight: 700;
 }
 
+.forgotPswd{
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    align-self: center;
+}
+.forgotPswd:hover{
+    text-decoration:underline;
+}
+
 div.form-group.required>label:first-child:after{
     content:'*';
     color: #fff;

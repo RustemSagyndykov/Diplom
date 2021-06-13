@@ -1,13 +1,27 @@
+<div class="row align-items-center">
+    <div class="col-xl-12">
+        <div class="form-group m-form__group align-items-center">
+            <div class="input-group">
+                <input style="box-shadow: none;" (keyup)="filterInput($event)" [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="Поиск по всем параметрам" type="text">
+                <span class="input-group-btn">
+                    <button (click)="getAll()" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <p-table #dt [value]="practiceList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
     [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
     [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
     <ng-template pTemplate="caption">
         <div class="table-header">
-            <span>ВЕСЬ СПИСОК ПРАКТИЧЕСКИХ РАБОТ</span>
-            <span>
-                <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
-            </span>
+            <div class="col-md-12">
+                <span>ВЕСЬ СПИСОК ПРАКТИЧЕСКИХ РАБОТ</span>
+                <span>
+                    <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
+                </span>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -39,11 +53,11 @@
                     <p-columnFilter type="text" field="practiceScore" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
-            <th pSortableColumn="status">
+            <th pSortableColumn="isAccept">
                 <div class="p-d-flex p-jc-between p-ai-center">
                     Статус
-                    <p-sortIcon field="status"></p-sortIcon>
-                    <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto"></p-columnFilter>
+                    <p-sortIcon field="isAccept"></p-sortIcon>
+                    <p-columnFilter type="text" field="isAccept" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
             <th pSortableColumn="studentFullName">
@@ -72,27 +86,32 @@
                 </div>
             </td> -->
             <td>
-                <span class="p-column-title">{{record.practiceName}}</span>
+                <span class="p-column-title">Название практического задания</span>
+                {{record.practiceName}}
             </td>
             <td>
-                <span class="p-column-title">{{record.subjectName}}</span>
+                <span class="p-column-title">Название предмета</span>
+                {{record.subjectName}}
             </td>
-            <td class="text-center">
-                <span class="p-column-title">{{record.practiceScore | number: '1.0-1'}} </span>
+            <td >
+                <span class="p-column-title">Балл</span>
+                {{record.practiceScore | number: '1.0-1'}} 
             </td>
             <td>
-                <span class="p-column-title" style="color:rgb(0, 255, 0)" *ngIf="record.isAccept == true">
+                <span class="p-column-title">Статус</span>
+                <span style="color:rgb(0, 255, 0)" *ngIf="record.isAccept == true">
                     Принято
                 </span>
-                <span class="p-column-title" style="color:red" *ngIf="record.isRevision == true">
+                <span style="color:red" *ngIf="record.isRevision == true">
                     Отправлено на доработку
                 </span>
-                <span class="p-column-title" style="color:rgb(1, 4, 206)" *ngIf="record.isRevision == false && record.isAccept == false">
+                <span style="color:rgb(1, 4, 206)" *ngIf="record.isRevision == false && record.isAccept == false">
                     На проверке
                 </span>
             </td>
             <td>
-                <span class="p-column-title">{{record.studentFullName}}</span>
+                <span class="p-column-title">ФИО Студента</span>
+                {{record.studentFullName}}
             </td>
         </tr>
     </ng-template>

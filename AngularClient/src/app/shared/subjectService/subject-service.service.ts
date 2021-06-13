@@ -13,8 +13,8 @@ export class SubjectService {
   //readonly BaseURI = 'https://localhost:44352/api';
   private readonly BaseURI = URI.BaseURI;
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/Subject/GetAll');
+  getAll(filterText){
+    return this.http.get(this.BaseURI + '/Subject/GetAll',{params: {filterText:filterText}});
   }
 
   getById(Id){

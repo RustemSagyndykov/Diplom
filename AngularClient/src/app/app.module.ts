@@ -73,6 +73,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { StatisticService } from './shared/statisticService/statistic.service';
 import { ChangePasswordModalComponent } from './admin/users/change-password-modal/change-password-modal.component';
+import { ForgotPasswordModalComponent } from './user/forgot-password-modal/forgot-password-modal.component';
+import { ResetPasswordModalComponent } from './user/reset-password/reset-password-modal/reset-password-modal.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 
 registerLocaleData(ru);
 
@@ -118,7 +121,10 @@ registerLocaleData(ru);
     CommentComponent,
     StudentSubjectStatisticModalComponent,
     StatisticsComponent,
-    ChangePasswordModalComponent
+    ChangePasswordModalComponent,
+    ForgotPasswordModalComponent,
+    ResetPasswordModalComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

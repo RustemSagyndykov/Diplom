@@ -14,7 +14,7 @@
     </div>
 </div>
 <div class="row" *ngIf="editMode == false">
-    <div class="col-md-4">
+    <div class="col-md-4 mb-3">
         <div class="form-group">
             <label for="practiceScore" style="font-size: 1rem;"><b>Балл:</b></label>
             <input type="number" maxlength="3" max="100" min="0" step="1" id="practiceScore" class="form-control"
@@ -23,8 +23,8 @@
         </div>
     </div>
     <div class="col-md-8 align-self-center mt-3">
-        <button class="btn btn-outline-primary px-3 py-2 float-right" (click)="Accept()">Принять работу</button>
-        <button class="btn btn-outline-primary px-3 py-2 float-right mr-3" (click)="SetdToRevision()">Отправить на доработку</button>
+        <button class="btn btn-outline-primary px-3 py-2 ml-3 mb-3 float-right" (click)="Accept()">Принять работу</button>
+        <button class="btn btn-outline-primary px-3 py-2 mb-3 float-right" (click)="SetdToRevision()">Отправить на доработку</button>
     </div>
 </div>
 <div class="row" *ngIf="studentPractice.studentPracticeFiles.length != 0">
@@ -36,7 +36,7 @@
     <ul>
         <li *ngFor="let file of studentPractice.studentPracticeFiles" class="pb-2">
             <a>
-                {{file.fileName}}
+                <span style="word-wrap:break-word;">{{file.fileName}}</span>
                 <app-download [fileName]="file.fileName"></app-download>
                 <button *ngIf="editMode == true" class="btn btn-outline-danger ml-2" (click)="delete(file.fileName)"><i class="fas fa-trash-alt"></i> Удалить</button>
             </a>
@@ -52,7 +52,7 @@
     <ul>
         <li *ngFor="let file of practice.practiceFiles" class="pb-2">
             <a>
-                {{file.fileName}}
+                <span style="word-wrap:break-word;">{{file.fileName}}</span>
                 <app-download [fileName]="file.fileName"></app-download>
             </a>
         </li>

@@ -16,8 +16,8 @@ export class StudentPracticeService {
     return this.http.post(this.BaseURI + '/StudentPractice/CreateOrEdit',studentPractice);
   }
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/StudentPractice/GetAll');
+  getAll(filterText:string){
+    return this.http.get(this.BaseURI + '/StudentPractice/GetAll',{params: {filterText:filterText}});
   }
 
   getById(Id){
@@ -28,7 +28,7 @@ export class StudentPracticeService {
     return this.http.get(this.BaseURI + '/StudentPractice/GetByIdForTeacher',{params: {id:Id}});
   }
 
-  getAllForTeacher(){
-    return this.http.get(this.BaseURI + '/StudentPractice/GetAllForTeacher');
+  getAllForTeacher(filterText:string){
+    return this.http.get(this.BaseURI + '/StudentPractice/GetAllForTeacher',{params: {filterText:filterText}});
   }
 }

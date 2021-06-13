@@ -10,7 +10,7 @@ import { UserRole } from 'src/app/models/Roles';
 @Component({
   selector: 'app-test-list',
   templateUrl: './test-list.component.html',
-  styleUrls: ['./test-list.component.css']
+  styleUrls: ['./test-list.component.scss']
 })
 export class TestListComponent implements OnInit {
 
@@ -21,6 +21,7 @@ export class TestListComponent implements OnInit {
   loading: boolean = true;
   role;
   userRoles = UserRole;
+  filterText='';
   @ViewChild('createOrEditTestModal', { static: true }) createOrEditTestModal: CreateOrEditTestComponent;
   @ViewChild('viewTestModal', { static: true }) viewTestModal: ViewTestModalComponent;   
 
@@ -37,13 +38,13 @@ export class TestListComponent implements OnInit {
 
   getAll(){
     if(this.role == this.userRoles.Admin){
-      this.service.getAll().subscribe((res:Test[])=>{
+      this.service.getAll(this.filterText).subscribe((res:Test[])=>{
         this.testList =res;
         this.loading = false;
       });
     }
     else{
-      this.service.getAllforUser().subscribe((res:Test[])=>{
+      this.service.getAllforUser(this.filterText).subscribe((res:Test[])=>{
         this.testList =res;
         this.loading = false;
       });
@@ -80,9 +81,11 @@ export class TestListComponent implements OnInit {
   }
 
   getTests(event?){
-    this.service.getAllforUser().subscribe((res:Test[]) =>{
-      this.testList = res;
-    });
+    // this.service.getAllforUser('').subscribe((res:Test[]) =>{
+    //   this.testList = res;
+    // });
+    this.filterText = '';
+    this.getAll();
   }
 
   getTest(event?){
@@ -120,4 +123,9 @@ export class TestListComponent implements OnInit {
     return test;
   }
 
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
+  }
 }

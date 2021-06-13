@@ -11,7 +11,7 @@ import { UserRole } from '../../models/Roles';
 @Component({
   selector: 'app-lecture-list',
   templateUrl: './lecture-list.component.html',
-  styleUrls: ['./lecture-list.component.css']
+  styleUrls: ['./lecture-list.component.scss']
 })
 export class LectureListComponent implements OnInit {
 
@@ -21,6 +21,7 @@ export class LectureListComponent implements OnInit {
   loading: boolean = true;
   role;
   userRoles = UserRole;
+  filterText='';
 
   constructor(private service: LectureService,private router: Router,private toastr: ToastrService) { }
 
@@ -37,13 +38,13 @@ export class LectureListComponent implements OnInit {
 
   getAll(){
     if(this.role == this.userRoles.Admin){
-      this.service.getAllForAdmin().subscribe((res:Lecture[])=>{
+      this.service.getAllForAdmin(this.filterText).subscribe((res:Lecture[])=>{
         this.lectureList =res;
         this.loading = false;
         console.log(this.lectureList);
       });
     }else{
-      this.service.getAll().subscribe((res:Lecture[])=>{
+      this.service.getAll(this.filterText).subscribe((res:Lecture[])=>{
         this.lectureList =res;
         this.loading = false;
         console.log(this.lectureList);
@@ -70,5 +71,11 @@ export class LectureListComponent implements OnInit {
         this.getAll();
         this.toastr.success('Deleted!', 'Lecture Deleted successful.');}
     );
+  }
+
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
   }
 }

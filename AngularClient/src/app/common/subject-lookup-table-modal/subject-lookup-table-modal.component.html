@@ -27,8 +27,21 @@
                             </div>
                         </div>
                     </form> -->
-
-                    <div class="row align-items-center">
+                    <form class="form" autocomplete="off">
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+                                        <input style="box-shadow: none;" (keyup)="filterInput($event)" [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="Поиск по всем параметрам" type="text">
+                                        <span class="input-group-btn">
+                                            <button (click)="getAll()" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row align-items-center pr-1 pl-1">
                         <p-table #dt [value]="subjectList" dataKey="id" styleClass="p-datatable-customers" [rowHover]="true" [rows]="5"
                         [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading" [paginator]="true"
                         currentPageReportTemplate="Показаны с {first} по {last} из {totalRecords}" [filterDelay]="0"
@@ -61,7 +74,6 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="p-column-title">Name</span>
                                     {{record.name}}
                                 </td>
                     

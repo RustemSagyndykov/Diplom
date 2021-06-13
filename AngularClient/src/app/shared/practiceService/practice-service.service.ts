@@ -21,20 +21,20 @@ export class PracticeService {
     return this.http.post(this.BaseURI + '/Practice/CreateOrEdit',practice);
   }
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/Practice/GetAllPracticeForTeacher');
+  getAll(filterText:string){
+    return this.http.get(this.BaseURI + '/Practice/GetAllPracticeForTeacher',{params: {filterText:filterText}});
   }
 
-  getAllForAdmin(){
-    return this.http.get(this.BaseURI + '/Practice/GetAllPracticeForAdmin');
+  getAllForAdmin(filterText:string){
+    return this.http.get(this.BaseURI + '/Practice/GetAllPracticeForAdmin',{params: {filterText:filterText}});
   }
 
-  getAllForStudent(){
-    return this.http.get(this.BaseURI + '/Practice/GetAllForStudent');
+  getAllForStudent(filterText:string){
+    return this.http.get(this.BaseURI + '/Practice/GetAllForStudent',{params: {filterText:filterText}});
   }
 
-  getAllForLookupTable(){
-    return this.http.get(this.BaseURI + '/Practice/GetAll');
+  getAllForLookupTable(filterText:string){
+    return this.http.get(this.BaseURI + '/Practice/GetAll',{params: {filterText:filterText}});
   }
 
   getById(Id){

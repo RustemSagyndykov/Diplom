@@ -22,6 +22,7 @@ export class SubjectLookupTableModalComponent implements OnInit {
     displayName: string;
     subjectList:Test[] = [];
     loading: boolean = true;
+    filterText='';
     
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     active = false;
@@ -34,13 +35,14 @@ export class SubjectLookupTableModalComponent implements OnInit {
     }
 
     show(): void {
+        this.filterText = '';
         this.active = true;
         this.getAll();
         this.modal.show();
     }
 
     getAll(){
-      this.service.getAll().subscribe((res:Test[])=>{
+      this.service.getAll(this.filterText).subscribe((res:Test[])=>{
         this.subjectList =res;
         this.loading = false;
         console.log(this.subjectList);
@@ -61,4 +63,9 @@ export class SubjectLookupTableModalComponent implements OnInit {
         this.modal.hide();
     }
 
+    filterInput(event){
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        this.getAll();
+      }
+    }
 }

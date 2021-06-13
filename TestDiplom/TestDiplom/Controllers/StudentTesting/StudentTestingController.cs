@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestDiplom.Models;
+using TestDiplom.Models.SendMessage;
 using TestDiplom.Models.StudentTesting;
 
 namespace TestDiplom.Controllers.StudentTesting
@@ -16,9 +18,13 @@ namespace TestDiplom.Controllers.StudentTesting
     public class StudentTestingController : ControllerBase
     {
         private readonly AuthenticationContext _context;
-        public StudentTestingController(AuthenticationContext context)
+        private UserManager<ApplicationUser> _userManager;
+        private ISendMessage _sendMessage;
+        public StudentTestingController(AuthenticationContext context, UserManager<ApplicationUser> userManager, ISendMessage sendMessage)
         {
             _context = context;
+            _userManager = userManager;
+            _sendMessage = sendMessage;
         }
 
         [HttpPost]
@@ -46,6 +52,7 @@ namespace TestDiplom.Controllers.StudentTesting
         public async Task<Object> Create(StudentTestingModel model)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _userManager.FindByIdAsync(userId);
 
             var testing = new Models.StudentTesting.StudentTesting()
             {
@@ -58,6 +65,15 @@ namespace TestDiplom.Controllers.StudentTesting
             {
                 var result = await _context.StudentTestings.AddAsync(testing);
                 await _context.SaveChangesAsync();
+
+                string message = $"Тест был пройден на {model.TestScore} баллов";
+                string firstName = user.FirstName ?? "";
+                string lastName = user.LastName ?? "";
+                string patronymic = user.Patronymic ?? "";
+                string fullName = firstName + " " + lastName + " " + patronymic;
+                string letterHeader = "Прохождение теста";
+
+                _sendMessage.SendMessageToMail(user.Email,message,fullName, letterHeader, false);
 
                 return Ok(result);
             }
@@ -74,6 +90,8 @@ namespace TestDiplom.Controllers.StudentTesting
 
         public async Task Update(StudentTestingModel model)
         {
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _userManager.FindByIdAsync(userId);
 
             var updateTesting = await _context.StudentTestings.FirstOrDefaultAsync(t => t.Id == model.Id);
 
@@ -83,6 +101,17 @@ namespace TestDiplom.Controllers.StudentTesting
 
             _context.StudentTestings.Update(updateTesting);
             await _context.SaveChangesAsync();
+
+            string message = $"Тест был перепройден на {model.TestScore} баллов";
+            string firstName = user.FirstName ?? "";
+            string lastName = user.LastName ?? "";
+            string patronymic = user.Patronymic ?? "";
+            string fullName = firstName + " " + lastName + " " + patronymic;
+            string letterHeader = "Перепрохождение теста";
+
+            _sendMessage.SendMessageToMail(user.Email, message, fullName, letterHeader,false);
+
+
         }
 
         [HttpGet]

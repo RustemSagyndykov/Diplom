@@ -10,7 +10,7 @@ import { UserRole } from 'src/app/models/Roles';
 @Component({
   selector: 'app-practice-list',
   templateUrl: './practice-list.component.html',
-  styleUrls: ['./practice-list.component.css']
+  styleUrls: ['./practice-list.component.scss']
 })
 export class PracticeListComponent implements OnInit {
 
@@ -18,6 +18,7 @@ export class PracticeListComponent implements OnInit {
   loading: boolean = true;
   role;
   userRoles = UserRole;
+  filterText='';
 
   @ViewChild('createOrEditPracticeModal', { static: true }) createOrEditPracticeModal: CreateOrEditPracticeModalComponent;
   @ViewChild('viewPracticeFileModal', { static: true }) viewPracticeFileModal: ViewPracticeFileModalComponent;
@@ -38,13 +39,13 @@ export class PracticeListComponent implements OnInit {
 
   getAll(){
     if(this.role == this.userRoles.Admin){
-      this.service.getAllForAdmin().subscribe((res:Practice[])=>{
+      this.service.getAllForAdmin(this.filterText).subscribe((res:Practice[])=>{
         this.practiceList =res;
         this.loading = false;
       });
     }
     else{
-      this.service.getAll().subscribe((res:Practice[])=>{
+      this.service.getAll(this.filterText).subscribe((res:Practice[])=>{
         this.practiceList =res;
         this.loading = false;
       });
@@ -67,4 +68,9 @@ export class PracticeListComponent implements OnInit {
     );
   }
 
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
+  }
 }

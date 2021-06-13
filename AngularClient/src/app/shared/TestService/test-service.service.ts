@@ -20,16 +20,16 @@ export class TestService {
     return this.http.post(this.BaseURI + '/Test/CreateOrEdit',test);
   }
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/Test/GetAll');
+  getAll(filterText:string){
+    return this.http.get(this.BaseURI + '/Test/GetAll',{params: {filterText:filterText}});
   }
 
-  getAllforUser(){
-    return this.http.get(this.BaseURI + '/Test/GetAllForUser');
+  getAllforUser(filterText:string){
+    return this.http.get(this.BaseURI + '/Test/GetAllForUser',{params: {filterText:filterText}});
   }
 
-  getAllForStudent(){
-    return this.http.get(this.BaseURI + '/Test/GetAllForStudent');
+  getAllForStudent(filterText:string){
+    return this.http.get(this.BaseURI + '/Test/GetAllForStudent',{params: {filterText:filterText}});
   }
 
   getById(Id){

@@ -21,16 +21,16 @@ export class LectureService {
     return this.http.post(this.BaseURI + '/Lecture/CreateOrEdit',lecture);
   }
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForUser');
+  getAll(filterText: string){
+    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForUser',{params: {filterText:filterText}});
   }
 
-  getAllForAdmin(){
-    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForAdmin');
+  getAllForAdmin(filterText: string){
+    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForAdmin',{params: {filterText:filterText}});
   }
 
-  getAllForStudent(){
-    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForStudent');
+  getAllForStudent(filterText: string){
+    return this.http.get(this.BaseURI + '/Lecture/GetAllLecturesForStudent',{params: {filterText:filterText}});
   }
 
   getById(Id){

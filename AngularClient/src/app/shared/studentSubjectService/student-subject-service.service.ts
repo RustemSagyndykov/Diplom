@@ -13,8 +13,8 @@ export class StudentSubjectServiceService {
   //readonly BaseURI = 'https://localhost:44352/api';
   private readonly BaseURI = URI.BaseURI;
 
-  getAll(){
-    return this.http.get(this.BaseURI + '/StudentSubject/GetAll');
+  getAll(filterText: string){
+    return this.http.get(this.BaseURI + '/StudentSubject/GetAll',{params: {filterText:filterText}});
   }
 
   getById(Id){

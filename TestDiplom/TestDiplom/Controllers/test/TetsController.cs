@@ -292,9 +292,13 @@ namespace TestDiplom.Controllers.test
         [Authorize]
         [Route("GetAll")]
         //GET : /api/Test/GetAll
-        public async Task<List<TestModel>> GetAll()
+        public async Task<List<TestModel>> GetAll(string filterText)
         {
-            var lst = await _context.Tests.Include(t => t.SubjectFk).ToListAsync();
+            var lst = await _context.Tests.Include(t => t.SubjectFk)
+                .Where(t => (!string.IsNullOrWhiteSpace(filterText)) ? t.Name.Contains(filterText)
+                || t.SubjectFk.Name.Contains(filterText)
+                 : true)
+                .ToListAsync();
 
             var tests = new List<TestModel>();
 
@@ -319,11 +323,16 @@ namespace TestDiplom.Controllers.test
         [Authorize]
         [Route("GetAllForUser")]
         //GET : /api/Test/GetAllForUser
-        public async Task<List<TestModel>> GetAllForUser()
+        public async Task<List<TestModel>> GetAllForUser(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-            var lst = await _context.Tests.Include(t => t.SubjectFk).Where(t => t.OwnerId == userId).ToListAsync();
+            var lst = await _context.Tests.Include(t => t.SubjectFk)
+                .Where(t => t.OwnerId == userId)
+                .Where(t => (!string.IsNullOrWhiteSpace(filterText)) ? t.Name.Contains(filterText)
+                || t.SubjectFk.Name.Contains(filterText)
+                 : true)
+                .ToListAsync();
 
             var tests = new List<TestModel>();
 
@@ -348,7 +357,7 @@ namespace TestDiplom.Controllers.test
         [Authorize(Roles = "Student")]
         [Route("GetAllForStudent")]
         //GET : /api/Test/GetAllForStudent
-        public async Task<List<TestModel>> GetAllForStudent()
+        public async Task<List<TestModel>> GetAllForStudent(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
@@ -358,7 +367,12 @@ namespace TestDiplom.Controllers.test
 
             foreach (var s in subjects)
             {
-                var list = await _context.Tests.Include(l => l.SubjectFk).Where(l => l.SubjectId == s.SubjectId).ToListAsync();
+                var list = await _context.Tests.Include(l => l.SubjectFk)
+                    .Where(l => l.SubjectId == s.SubjectId)
+                    .Where(t => (!string.IsNullOrWhiteSpace(filterText)) ? t.Name.Contains(filterText)
+                    || t.SubjectFk.Name.Contains(filterText)
+                    : true)
+                    .ToListAsync();
 
                 foreach (var item in list)
                 {

@@ -67,9 +67,12 @@ namespace TestDiplom.Controllers.subject
         [Authorize]
         [Route("GetAll")]
         //GET : /api/Subject/GetAll
-        public async Task<List<Subject>> GetAll()
+        public async Task<List<Subject>> GetAll(string filterText)
         {
-            var sub = await _context.Subjects.ToListAsync();
+            var sub = await _context.Subjects
+                .Where(l => (!string.IsNullOrWhiteSpace(filterText)) ? l.Name.Contains(filterText)
+                || l.CreationTime.Date.ToString().Contains(filterText.Length == 10 ? Convert.ToDateTime(filterText).ToString("yyyy-MM-dd") : filterText)
+                 : true).ToListAsync();
 
             var subjects = new List<Subject>();
 

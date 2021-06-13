@@ -1,13 +1,27 @@
+<div class="row align-items-center">
+    <div class="col-xl-12">
+        <div class="form-group m-form__group align-items-center">
+            <div class="input-group">
+                <input style="box-shadow: none;" (keyup)="filterInput($event)" [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="Поиск по всем параметрам" type="text">
+                <span class="input-group-btn">
+                    <button (click)="getAll()" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <p-table #dt [value]="testList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
     [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
     [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
     <ng-template pTemplate="caption">
         <div class="table-header">
-            <span>ВЕСЬ СПИСОК ТЕСТОВ</span>
-            <span>
-                <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
-            </span>
+            <div class="col-md-12">
+                <span>ВЕСЬ СПИСОК ТЕСТОВ</span>
+                <span>
+                    <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
+                </span>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -26,18 +40,18 @@
                     <p-columnFilter type="text" field="subjectName" display="menu" class="p-ml-auto"></p-columnFilter>
                 </div>
             </th>
-            <th pSortableColumn="testScore">
-                <div class="p-d-flex p-jc-between p-ai-center text-center">
+            <th >
+                <div class="p-d-flex p-jc-between p-ai-center">
                     Балл
-                    <p-sortIcon field="testScore"></p-sortIcon>
-                    <p-columnFilter type="text" field="testScore" display="menu" class="p-ml-auto"></p-columnFilter>
+                    <!-- <p-sortIcon field="testScore"></p-sortIcon>
+                    <p-columnFilter type="text" field="testScore" display="menu" class="p-ml-auto"></p-columnFilter> -->
                 </div>
             </th>
-            <th pSortableColumn="isTested">
+            <th >
                 <div class="p-d-flex p-jc-between p-ai-center">
                     Статус
-                    <p-sortIcon field="isTested"></p-sortIcon>
-                    <p-columnFilter type="text" field="isTested" display="menu" class="p-ml-auto"></p-columnFilter>
+                    <!-- <p-sortIcon field="isTested"></p-sortIcon>
+                    <p-columnFilter type="text" field="isTested" display="menu" class="p-ml-auto"></p-columnFilter> -->
                 </div>
             </th>
             
@@ -52,23 +66,28 @@
     <ng-template pTemplate="body" let-record>
         <tr class="p-selectable-row">
             <td>
-                <span class="p-column-title">{{record.name}}</span>
+                <span class="p-column-title">Название теста</span>
+                {{record.name}}
             </td>
             <td>
-                <span class="p-column-title">{{record.subjectName}}</span>
-            </td>
-            <td class="text-center">
-                <span class="p-column-title">{{getTestScore(record.id) | number: '1.0-1'}} </span>
+                <span class="p-column-title">Название предмета</span>
+                {{record.subjectName}}
             </td>
             <td>
-                <span class="p-column-title" style="color:rgb(0, 255, 0)" *ngIf="getTestingStatus(record.id) == true">
+                <span class="p-column-title">Балл</span>
+                {{getTestScore(record.id) | number: '1.0-1'}} 
+            </td>
+            <td>
+                <span class="p-column-title">Статус</span>
+                <span style="color:rgb(0, 255, 0)" *ngIf="getTestingStatus(record.id) == true">
                     Пройден
                 </span>
-                <span class="p-column-title" style="color:red" *ngIf="getTestingStatus(record.id) == false">
+                <span style="color:red" *ngIf="getTestingStatus(record.id) == false">
                     Не Пройден
                 </span>
             </td>
             <td>
+                <span class="p-column-title">Прохождение теста</span>
                 <button class="btn btn-sm btn-outline-primary" (click)="testing(record.id)"><i class="fa fa-tasks"></i> Пройи тестирование</button>
             </td>
             

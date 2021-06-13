@@ -69,5 +69,16 @@ namespace TestDiplom.Controllers
             }
             return contentType;
         }
+
+        [HttpGet]
+        [Route("GetPhoto")]
+        public IActionResult GetPhoto(string file)
+        {
+            if (!System.IO.File.Exists(file))
+                return NotFound();
+
+            var image = System.IO.File.OpenRead(file);
+            return File(image, "image/*");
+        }
     }
 }

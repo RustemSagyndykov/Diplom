@@ -1,4 +1,4 @@
-<img src="/assets/img/single_user.png" class="mx-auto d-block">
+<!-- <img src="/assets/img/single_user.png" class="mx-auto d-block"> -->
         <form [formGroup]="service.formModel" autocomplete="off" (submit)="onSubmit()">
             <div class="form-group required">
                 <label>Название учетной записи</label>
@@ -6,12 +6,14 @@
                 <label class = "text-danger" *ngIf="service.formModel.get('UserName').touched && 
                 service.formModel.get('UserName').errors?.required">Данное поле обязатольно для заполнения.</label>
             </div>
-            <!-- <div class="form-group">
+            <div class="form-group required">
                 <label>Email</label>
                 <input class="form-control" formControlName="Email">
                 <label class = "text-danger" *ngIf="service.formModel.get('Email').touched && 
-                service.formModel.get('Email').errors?.email">Invalid email address.</label>
-            </div> -->
+                service.formModel.get('Email').errors?.email">Неверный адрес электронной почты.</label>
+                <label class = "text-danger" *ngIf="service.formModel.get('Email').touched && 
+                service.formModel.get('Email').errors?.required">Данное поле обязатольно для заполнения.</label>
+            </div>
             <!-- <div class="form-group">
                 <label>Full Name</label>
                 <input class="form-control" formControlName="FullName">
@@ -40,6 +42,8 @@
                     <option style="font-size: 1.2rem;" value="Student">Студент</option>
                     <option style="font-size: 1.2rem;" value="Teacher">Преподователь</option>
                 </select>
+                <label class = "text-danger" *ngIf="service.formModel.get('Role').touched && 
+                service.formModel.get('Role').errors?.required">Данное поле обязатольно для заполнения.</label>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-8 offset-md-2">

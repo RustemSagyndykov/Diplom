@@ -23,6 +23,8 @@ import { StudentPracticeListComponent } from './practice/student-practice-list/s
 import { StudentPracticeComponent } from './practice/student-practice/student-practice.component';
 import { StudentPracticeListForTeacherComponent } from './practice/student-practice-list-for-teacher/student-practice-list-for-teacher.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { ResetPasswordModalComponent } from './user/reset-password/reset-password-modal/reset-password-modal.component';
+import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/user/login', pathMatch:'full'},
@@ -31,6 +33,12 @@ const routes: Routes = [
     children:[
       {path: 'registration', component: RegistrationComponent},
       {path: 'login', component: LoginComponent}
+    ]
+  },
+  {
+    path: 'resetPswd', component: ResetPasswordComponent,
+    children:[
+      {path: 'resetPassword', component: ResetPasswordModalComponent}
     ]
   },
   {path: 'home', component: HomeComponent, canActivate:[AuthGuard],children:[

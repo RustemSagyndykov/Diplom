@@ -87,11 +87,12 @@ namespace TestDiplom.Controllers.Statistic
 
         protected ChartModel CreateChartModel(string name, double value)
         {
-            ChartModel chartModel = new ChartModel
-            {
-                Name = name,
-                Value = Math.Round(value, 2)
-            };
+            ChartModel chartModel = new ChartModel();
+            chartModel.Name = name;
+            if (value > 0)
+                chartModel.Value = Math.Round(value, 2);
+            else
+                chartModel.Value = 0;
 
             return chartModel;
         }

@@ -24,7 +24,8 @@
               [(nzCollapsed)]="isCollapsed"
               [nzTrigger]="null">
       <div class="sidebar-logo">
-        <a href="https://ng.ant.design/" target="_blank">
+        <!-- <a href="https://ng.ant.design/" target="_blank"> -->
+        <a>
           <!-- <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo"> -->
           <img src="https://img.icons8.com/color/72/devpost.svg" alt="logo">
           <h1>Diplom</h1>
@@ -97,10 +98,10 @@
             </li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="Тест" nzIcon="check-circle" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
+        <li nz-submenu nzTitle="Тесты" nzIcon="check-circle" *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
           <ul>
             <li nz-menu-item nzMatchRouter *ngIf="role==userRoles.Teacher || role==userRoles.Admin">
-              <a routerLink="/home/testList">Тест</a>
+              <a routerLink="/home/testList">Тесты</a>
             </li>
           </ul>
         </li>

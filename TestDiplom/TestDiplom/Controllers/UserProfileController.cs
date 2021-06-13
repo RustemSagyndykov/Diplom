@@ -56,9 +56,17 @@ namespace TestDiplom.Controllers
         [Authorize]
         [Route("GetAll")]
         //Get : /api/GetAll
-        public async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAll(string filterText)
         {
-            var users = await _userManager.Users.Where(u => u.UserName != "Admin").ToListAsync();
+            var users = await _userManager.Users
+                .Where(u => u.UserName != "Admin")
+                .Where(u => (!string.IsNullOrWhiteSpace(filterText)) ? u.UserName.Contains(filterText)
+                || (u.LastName.Replace(" ", "") + u.FirstName.Replace(" ", "") + u.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (u.LastName.Replace(" ", "") + u.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || u.PhoneNumber.Contains(filterText) 
+                || (filterText.ToLower().Replace(" ", "") == "активен" ? u.IsBlocked != true : filterText.ToLower().Replace(" ", "") == "заблокирован" ? u.IsBlocked == true: false)
+                 : true)
+                .ToListAsync();
 
             List<UserModel> userLst = new List<UserModel>();
 

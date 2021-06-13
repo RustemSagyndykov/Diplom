@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using TestDiplom.Models.SendMessage;
 
 namespace TestDiplom
 {
@@ -52,6 +53,11 @@ namespace TestDiplom
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AuthenticationContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+            opt.TokenLifespan = TimeSpan.FromHours(2));
+
+            services.AddTransient<ISendMessage,SendMessage>();
 
             services.Configure<IdentityOptions>(options => {
                 options.Password.RequireDigit = false;

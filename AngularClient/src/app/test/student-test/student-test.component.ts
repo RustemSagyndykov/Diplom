@@ -8,7 +8,7 @@ import { TestService } from 'src/app/shared/TestService/test-service.service';
 @Component({
   selector: 'app-student-test',
   templateUrl: './student-test.component.html',
-  styleUrls: ['./student-test.component.css']
+  styleUrls: ['./student-test.component.scss']
 })
 export class StudentTestComponent implements OnInit {
 
@@ -16,6 +16,7 @@ export class StudentTestComponent implements OnInit {
   studentTestingList: StudentTesting[] = [];
   loading: boolean = true;
   userId;
+  filterText='';
 
   constructor(private service: TestService,private studentTestingService: StudentTestingService,private router: Router) { }
 
@@ -26,7 +27,7 @@ export class StudentTestComponent implements OnInit {
   }
 
   getAll(){
-    this.service.getAllForStudent().subscribe((res:Test[])=>{
+    this.service.getAllForStudent(this.filterText).subscribe((res:Test[])=>{
       this.testList =res;
       this.loading = false;
       console.log(this.testList);
@@ -67,4 +68,9 @@ export class StudentTestComponent implements OnInit {
     return res;
   }
 
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
+  }
 }

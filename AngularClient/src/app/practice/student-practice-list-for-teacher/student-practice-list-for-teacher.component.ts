@@ -8,7 +8,7 @@ import { ViewPracticeFileModalComponent } from '../view-practice-file-modal/view
 @Component({
   selector: 'app-student-practice-list-for-teacher',
   templateUrl: './student-practice-list-for-teacher.component.html',
-  styleUrls: ['./student-practice-list-for-teacher.component.css']
+  styleUrls: ['./student-practice-list-for-teacher.component.scss']
 })
 export class StudentPracticeListForTeacherComponent implements OnInit {
 
@@ -16,6 +16,7 @@ export class StudentPracticeListForTeacherComponent implements OnInit {
   loading: boolean = true;
   role;
   userRoles = UserRole;
+  filterText='';
 
   @ViewChild('viewPracticeFileModal', { static: true }) viewPracticeFileModal: ViewPracticeFileModalComponent;
 
@@ -34,13 +35,13 @@ export class StudentPracticeListForTeacherComponent implements OnInit {
 
   getAll(){
     if(this.role == this.userRoles.Admin){
-      this.service.getAll().subscribe((res:StudentPractice[])=>{
+      this.service.getAll(this.filterText).subscribe((res:StudentPractice[])=>{
         this.practiceList =res;
         this.loading = false;
       });
     }
     else{
-      this.service.getAllForTeacher().subscribe((res:StudentPractice[])=>{
+      this.service.getAllForTeacher(this.filterText).subscribe((res:StudentPractice[])=>{
         this.practiceList =res;
         this.loading = false;
       });
@@ -49,5 +50,11 @@ export class StudentPracticeListForTeacherComponent implements OnInit {
 
   RedirectToStudentPractice(Id:number,StudentPracticeId : number){
     this.router.navigate(['/home/studentPractice'], { queryParams: { id: Id, edit:false, studentPracticeId: StudentPracticeId} })/*.then(f => { location.reload(true) });*/
+  }
+
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
   }
 }

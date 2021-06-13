@@ -21,6 +21,7 @@ export class TestLookupTableModalComponent implements OnInit{
     displayName: string;
     testList:Test[] = [];
     loading: boolean = true;
+    filterText='';
     
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     active = false;
@@ -33,13 +34,14 @@ export class TestLookupTableModalComponent implements OnInit{
     }
 
     show(): void {
+        this.filterText='';
         this.active = true;
         this.getAll();
         this.modal.show();
     }
 
     getAll(){
-      this.service.getAll().subscribe((res:Test[])=>{
+      this.service.getAll(this.filterText).subscribe((res:Test[])=>{
         this.testList =res;
         this.loading = false;
         console.log(this.testList);
@@ -60,4 +62,9 @@ export class TestLookupTableModalComponent implements OnInit{
         this.modal.hide();
     }
 
+    filterInput(event){
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        this.getAll();
+      }
+    }
 }

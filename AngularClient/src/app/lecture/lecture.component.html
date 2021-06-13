@@ -78,9 +78,9 @@
     <ul>
         <li *ngFor="let file of lectureFiles" class="mb-2">
             <a>
-                {{file.fileName}}
-                <app-download [fileName]="file.fileName"></app-download>
-                <button *ngIf="!viewMode" class="btn btn-outline-danger ml-2" (click)="delete(file.fileName)"><i class="fa fa-trash"></i> Удалить</button>
+                <span style="word-wrap: break-word;">{{file.fileName}}</span>
+                <app-download [fileName]="file.fileName" class="mr-2"></app-download>
+                <button *ngIf="!viewMode" class="btn btn-outline-danger" (click)="delete(file.fileName)"><i class="fa fa-trash"></i> Удалить</button>
             </a>
         </li>
     </ul>

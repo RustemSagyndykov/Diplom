@@ -65,13 +65,23 @@ namespace TestDiplom.Controllers.lecture
         [Authorize]
         [Route("GetAllLecturesForUser")]
         //GET : /api/Lecture/GetAllLecturesForUser
-        public List<LectureModel> GetAllLecturesForUser()
+        public async Task<List<LectureModel>> GetAllLecturesForUser(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-            var list = _context.Lectures
+            var list = await _context.Lectures
                 .Include(l => l.OwnerFk)
-                .Include(l => l.SubjectFk).Where(l => l.OwnerId == userId);
+                .Include(l => l.SubjectFk)
+                .Where(l => l.OwnerId == userId)
+                .Where(l => (!string.IsNullOrWhiteSpace(filterText)) ? l.Name.Contains(filterText)
+                || l.SubjectFk.Name.Contains(filterText)
+                || (l.OwnerFk.LastName.Replace(" ", "") + l.OwnerFk.FirstName.Replace(" ", "") + l.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.LastName.Replace(" ", "") + l.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.FirstName.Replace(" ", "") + l.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.Patronymic.Replace(" ", "") + l.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.Patronymic.Replace(" ", "") + l.OwnerFk.FirstName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                 : true)
+                .ToListAsync();
 
             var lst = new List<LectureModel>();
 
@@ -83,7 +93,7 @@ namespace TestDiplom.Controllers.lecture
                 lecture.Name = item.Name;
                 lecture.OwnerId = item.OwnerId;
                 lecture.SubjectName = item.SubjectFk.Name;
-                lecture.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
+                lecture.OwnerName = item.OwnerFk.LastName + " " + item.OwnerFk.FirstName + " " + item.OwnerFk.Patronymic;
                 lecture.LectureFiles = GetAllLectureFilesById(item.Id);
 
                 lst.Add(lecture);
@@ -96,11 +106,20 @@ namespace TestDiplom.Controllers.lecture
         [Authorize(Roles = "Admin")]
         [Route("GetAllLecturesForAdmin")]
         //GET : /api/Lecture/GetAllLecturesForAdmin
-        public async  Task<List<LectureModel>> GetAllLecturesForAdmin()
+        public async  Task<List<LectureModel>> GetAllLecturesForAdmin(string filterText)
         {
             var list = await _context.Lectures
                 .Include(l => l.OwnerFk)
-                .Include(l => l.SubjectFk).ToListAsync();
+                .Include(l => l.SubjectFk)
+                .Where(l => (!string.IsNullOrWhiteSpace(filterText)) ? l.Name.Contains(filterText) 
+                || l.SubjectFk.Name.Contains(filterText) 
+                || (l.OwnerFk.LastName.Replace(" ","") + l.OwnerFk.FirstName.Replace(" ", "") + l.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.LastName.Replace(" ", "") + l.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.FirstName.Replace(" ", "") + l.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.Patronymic.Replace(" ", "") + l.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (l.OwnerFk.Patronymic.Replace(" ", "") + l.OwnerFk.FirstName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                 : true)
+                .ToListAsync();
 
             var lst = new List<LectureModel>();
 
@@ -113,7 +132,7 @@ namespace TestDiplom.Controllers.lecture
                 lecture.OwnerId = item.OwnerId;
                 lecture.SubjectName = item.SubjectFk.Name;
                 //lecture.OwnerName = item.OwnerFk.FullName;
-                lecture.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
+                lecture.OwnerName = item.OwnerFk.LastName + " " + item.OwnerFk.FirstName + " " + item.OwnerFk.Patronymic;
                 lecture.LectureFiles = GetAllLectureFilesById(item.Id);
 
                 lst.Add(lecture);
@@ -126,7 +145,7 @@ namespace TestDiplom.Controllers.lecture
         [Authorize(Roles = "Student")]
         [Route("GetAllLecturesForStudent")]
         //GET : /api/Lecture/GetAllLecturesForStudent
-        public async Task<List<LectureModel>> GetAllLecturesForStudent()
+        public async Task<List<LectureModel>> GetAllLecturesForStudent(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
@@ -136,7 +155,12 @@ namespace TestDiplom.Controllers.lecture
 
             foreach (var s in subjects)
             {
-                var list = await _context.Lectures.Include(l => l.SubjectFk).Where(l => l.SubjectId == s.SubjectId).ToListAsync();
+                var list = await _context.Lectures.Include(l => l.SubjectFk)
+                    .Where(l => l.SubjectId == s.SubjectId)
+                    .Where(l => (!string.IsNullOrWhiteSpace(filterText)) ? l.Name.Contains(filterText)
+                    || l.SubjectFk.Name.Contains(filterText)
+                    : true)
+                    .ToListAsync();
 
                 foreach (var item in list)
                 {

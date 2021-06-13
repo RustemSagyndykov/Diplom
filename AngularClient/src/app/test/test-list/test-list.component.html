@@ -1,16 +1,30 @@
+<div class="row align-items-center">
+    <div class="col-xl-12">
+        <div class="form-group m-form__group align-items-center">
+            <div class="input-group">
+                <input style="box-shadow: none;" (keyup)="filterInput($event)" [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="Поиск по всем параметрам" type="text">
+                <span class="input-group-btn">
+                    <button (click)="getAll()" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <p-table #dt [value]="testList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
     [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
     [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
     <ng-template pTemplate="caption">
         <div class="table-header">
-            <span>ВЕСЬ СПИСОК ТЕСТОВ</span>
-            <span>
-                <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
-            </span>
-            <span>
-                <button class="btn btn-md btn-outline-primary float-right" (click)="create()"><i class="fa fa-plus"></i> Создать новый тест</button>
-            </span>
+            <div class="col-md-12">
+                <span>ВЕСЬ СПИСОК ТЕСТОВ</span>
+                <span>
+                    <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
+                </span>
+                <span>
+                    <button class="btn btn-md btn-outline-primary float-right" (click)="create()"><i class="fa fa-plus"></i> Создать новый тест</button>
+                </span>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -53,6 +67,7 @@
     <ng-template pTemplate="body" let-record>
         <tr class="p-selectable-row">
             <td style="width: 130px">
+                <span class="p-column-title">Действия</span>
                 <div class="btn-group dropdown">
                     <button class="dropdown-toggle btn btn-sm btn-outline-primary" id="dropdownMenuButton"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i class="fa fa-cog"></i><span class="caret"></span>
@@ -78,15 +93,19 @@
                 </div>
             </td>
             <td>
-                <span class="p-column-title">{{record.name}}</span>
+                <span class="p-column-title">Название теста</span>
+                {{record.name}}
             </td>
             <td>
-                <span class="p-column-title">{{record.subjectName}}</span>
-            </td>
-            <td class="text-center">
-                <span class="p-column-title">{{record.amountTestQuestions}}</span>
+                <span class="p-column-title">Название предмета</span>
+                {{record.subjectName}}
             </td>
             <td>
+                <span class="p-column-title">Количество вопросов</span>
+                {{record.amountTestQuestions}}
+            </td>
+            <td>
+                <span class="p-column-title">Прохождение теста</span>
                 <button class="btn btn-sm btn-outline-primary" (click)="testing(record.id)"><i class="fa fa-tasks"></i> Пройи тестирование</button>
             </td>
             

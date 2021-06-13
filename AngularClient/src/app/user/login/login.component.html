@@ -15,4 +15,9 @@
             <button type="submit" class="btn btn-lg btn-block" [disabled]="form.invalid">Войти</button>
         </div>
     </div>
+    <div class="form-group text-center">
+        <span class="forgotPswd" (click)="forgotPasswordModalComponent.show()">Забыл пароль</span> 
+    </div>
 </form>
+
+<app-forgot-password-modal #forgotPasswordModalComponent></app-forgot-password-modal>

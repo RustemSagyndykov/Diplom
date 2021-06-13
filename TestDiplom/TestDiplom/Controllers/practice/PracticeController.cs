@@ -42,9 +42,11 @@ namespace TestDiplom.Controllers.practice
         [Authorize]
         [Route("GetAll")]
         //GET : /api/Practice/GetAll
-        public async Task<List<PracticeModel>> GetAll()
+        public async Task<List<PracticeModel>> GetAll(string filterText)
         {
-            var lst = await _context.Practices.ToListAsync();
+            var lst = await _context.Practices
+                .Where(p => (!string.IsNullOrWhiteSpace(filterText)) ? p.Name.Contains(filterText) : true)
+                .ToListAsync();
 
             var practices = new List<PracticeModel>();
 
@@ -66,13 +68,23 @@ namespace TestDiplom.Controllers.practice
         [Authorize(Roles = "Teacher")]
         [Route("GetAllPracticeForTeacher")]
         //GET : /api/Practice/GetAllPracticeForTeacher
-        public List<PracticeModel> GetAllPracticeForTeacher()
+        public async Task<List<PracticeModel>> GetAllPracticeForTeacher(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
-            var list = _context.Practices
+            var list = await _context.Practices
                 .Include(p => p.SubjectFk)
-                .Include(p => p.OwnerFk).Where(p => p.OwnerId == userId);
+                .Include(p => p.OwnerFk)
+                .Where(p => p.OwnerId == userId)
+                .Where(p => (!string.IsNullOrWhiteSpace(filterText)) ? p.Name.Contains(filterText)
+                || p.SubjectFk.Name.Contains(filterText)
+                || (p.OwnerFk.LastName.Replace(" ", "") + p.OwnerFk.FirstName.Replace(" ", "") + p.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.LastName.Replace(" ", "") + p.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.FirstName.Replace(" ", "") + p.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.Patronymic.Replace(" ", "") + p.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.Patronymic.Replace(" ", "") + p.OwnerFk.FirstName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                : true)
+                .ToListAsync();
 
             var lst = new List<PracticeModel>();
 
@@ -84,7 +96,7 @@ namespace TestDiplom.Controllers.practice
                 practice.Name = item.Name;
                 practice.OwnerId = item.OwnerId;
                 //practice.OwnerName = item.OwnerFk.FullName;
-                practice.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
+                practice.OwnerName = item.OwnerFk.LastName + " " + item.OwnerFk.FirstName + " " + item.OwnerFk.Patronymic;
                 practice.SubjectName = item.SubjectFk.Name;
                 practice.PracticeFiles = GetAllPracticeFilesById(item.Id);
 
@@ -98,13 +110,22 @@ namespace TestDiplom.Controllers.practice
         [Authorize(Roles = "Admin")]
         [Route("GetAllPracticeForAdmin")]
         //GET : /api/Practice/GetAllPracticeForAdmin
-        public async Task<List<PracticeModel>> GetAllPracticeForAdmin()
+        public async Task<List<PracticeModel>> GetAllPracticeForAdmin(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
             var list = await _context.Practices
                 .Include(p => p.SubjectFk)
-                .Include(p => p.OwnerFk).ToListAsync();
+                .Include(p => p.OwnerFk)
+                .Where(p => (!string.IsNullOrWhiteSpace(filterText)) ? p.Name.Contains(filterText)
+                || p.SubjectFk.Name.Contains(filterText)
+                || (p.OwnerFk.LastName.Replace(" ", "") + p.OwnerFk.FirstName.Replace(" ", "") + p.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.LastName.Replace(" ", "") + p.OwnerFk.Patronymic.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.FirstName.Replace(" ", "") + p.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.Patronymic.Replace(" ", "") + p.OwnerFk.LastName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                || (p.OwnerFk.Patronymic.Replace(" ", "") + p.OwnerFk.FirstName.Replace(" ", "")).ToUpper().Contains(filterText.Replace(" ", "").ToUpper())
+                : true)
+                .ToListAsync();
 
             var lst = new List<PracticeModel>();
 
@@ -115,7 +136,7 @@ namespace TestDiplom.Controllers.practice
                 practice.Id = item.Id;
                 practice.Name = item.Name;
                 practice.OwnerId = item.OwnerId;
-                practice.OwnerName = item.OwnerFk.FirstName + " " + item.OwnerFk.LastName + " " + item.OwnerFk.Patronymic;
+                practice.OwnerName = item.OwnerFk.LastName + " " + item.OwnerFk.FirstName + " " + item.OwnerFk.Patronymic;
                 practice.SubjectName = item.SubjectFk.Name;
                 practice.PracticeFiles = GetAllPracticeFilesById(item.Id);
 
@@ -129,7 +150,7 @@ namespace TestDiplom.Controllers.practice
         [Authorize]
         [Route("GetAllForStudent")]
         //GET : /api/Practice/GetAllForStudent
-        public async Task<List<PracticeModel>> GetAllForStudent()
+        public async Task<List<PracticeModel>> GetAllForStudent(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
@@ -139,7 +160,13 @@ namespace TestDiplom.Controllers.practice
 
             foreach (var item in subjects)
             {
-                var list = await _context.Practices.Include(p => p.SubjectFk).Where(p => p.SubjectId == item.SubjectId).ToListAsync();
+                var list = await _context.Practices
+                    .Include(p => p.SubjectFk)
+                    .Where(p => p.SubjectId == item.SubjectId)
+                    .Where(p => (!string.IsNullOrWhiteSpace(filterText)) ? p.Name.Contains(filterText)
+                    || p.SubjectFk.Name.Contains(filterText)
+                    : true)
+                    .ToListAsync();
 
                 foreach (var p in list) 
                 {

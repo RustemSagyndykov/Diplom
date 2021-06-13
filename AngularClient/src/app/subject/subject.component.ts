@@ -12,7 +12,7 @@ import { SafeSubscriber } from 'rxjs/internal/Subscriber';
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
-  styleUrls: ['./subject.component.css']
+  styleUrls: ['./subject.component.scss']
 })
 export class SubjectComponent implements OnInit {
 
@@ -21,6 +21,7 @@ export class SubjectComponent implements OnInit {
   role;
   userId;
   userRoles = UserRole;
+  filterText='';
   studentSubjectList:StudentSubject[]=[]
   @ViewChild('createOrEditSubjectModal', { static: true }) createOrEditSubjectModal: CreateOrEditSubjectComponent;
   @ViewChild('viewSubjectModal', { static: true }) viewSubjectModal: ViewSubjectModalComponent; 
@@ -35,7 +36,7 @@ export class SubjectComponent implements OnInit {
   }
 
   getAll(){
-    this.service.getAll().subscribe((res:Subject[])=>{
+    this.service.getAll(this.filterText).subscribe((res:Subject[])=>{
       this.subjectList =res;
       this.loading = false;
       console.log(this.subjectList);
@@ -80,7 +81,7 @@ export class SubjectComponent implements OnInit {
   }
 
   getAllStudentSubject(){
-    this.studentSubjectService.getAll().subscribe((res:StudentSubject[])=>{
+    this.studentSubjectService.getAll('').subscribe((res:StudentSubject[])=>{
       this.studentSubjectList = res;
     });
   }
@@ -125,6 +126,12 @@ export class SubjectComponent implements OnInit {
       this.toastr.success('Подписано!', 'Пользователь был отписан от предмета.');
     });
 
+  }
+
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
   }
 
 }

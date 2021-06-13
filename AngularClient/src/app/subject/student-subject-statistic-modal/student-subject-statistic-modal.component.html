@@ -36,10 +36,12 @@
                         <ng-template pTemplate="body" let-record>
                             <tr class="p-selectable-row">
                                 <td>
-                                    <span class="p-column-title">{{record.name}}</span>
+                                    <span class="p-column-title">Название практического задания</span>
+                                    {{record.name}}
                                 </td>
                                 <td>
-                                    <span class="p-column-title">{{getPracticeScore(record.id) | number: '1.0-1'}} </span>
+                                    <span class="p-column-title">Балл</span>
+                                    {{getPracticeScore(record.id) | number: '1.0-1'}} 
                                 </td>
                             </tr>
                         </ng-template>
@@ -80,10 +82,12 @@
                         <ng-template pTemplate="body" let-record>
                             <tr class="p-selectable-row">
                                 <td>
-                                    <span class="p-column-title">{{record.name}}</span>
+                                    <span class="p-column-title">Название теста</span>
+                                    {{record.name}}
                                 </td>
                                 <td>
-                                    <span class="p-column-title">{{getTestScore(record.id) | number: '1.0-1'}} </span>
+                                    <span class="p-column-title">Балл</span>
+                                    {{getTestScore(record.id) | number: '1.0-1'}} 
                                 </td>
                             </tr>
                         </ng-template>

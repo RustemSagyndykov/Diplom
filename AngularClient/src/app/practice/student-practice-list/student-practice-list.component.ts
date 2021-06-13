@@ -9,7 +9,7 @@ import { ViewPracticeFileModalComponent } from '../view-practice-file-modal/view
 @Component({
   selector: 'app-student-practice-list',
   templateUrl: './student-practice-list.component.html',
-  styleUrls: ['./student-practice-list.component.css']
+  styleUrls: ['./student-practice-list.component.scss']
 })
 export class StudentPracticeListComponent implements OnInit {
 
@@ -17,6 +17,7 @@ export class StudentPracticeListComponent implements OnInit {
   studentPracticeList: StudentPractice[] = [];
   loading: boolean = true;
   userId;
+  filterText='';
 
   @ViewChild('viewPracticeFileModal', { static: true }) viewPracticeFileModal: ViewPracticeFileModalComponent;
 
@@ -29,14 +30,14 @@ export class StudentPracticeListComponent implements OnInit {
   }
 
   getAll(){
-    this.service.getAllForStudent().subscribe((res:Practice[])=>{
+    this.service.getAllForStudent(this.filterText).subscribe((res:Practice[])=>{
       this.practiceList =res;
       this.loading = false;
     });
   }
 
   getAllStudentPractice(){
-    this.studentPracticeService.getAll().subscribe((res:StudentPractice[])=>{
+    this.studentPracticeService.getAll('').subscribe((res:StudentPractice[])=>{
       this.studentPracticeList = res;
     });
   }
@@ -78,5 +79,11 @@ export class StudentPracticeListComponent implements OnInit {
       }
     }
     return res;
+  }
+
+  filterInput(event){
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      this.getAll();
+    }
   }
 }

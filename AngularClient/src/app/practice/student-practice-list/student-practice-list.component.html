@@ -1,13 +1,27 @@
+<div class="row align-items-center">
+    <div class="col-xl-12">
+        <div class="form-group m-form__group align-items-center">
+            <div class="input-group">
+                <input style="box-shadow: none;" (keyup)="filterInput($event)" [(ngModel)]="filterText" name="filterText" class="form-control" placeholder="Поиск по всем параметрам" type="text">
+                <span class="input-group-btn">
+                    <button (click)="getAll()" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <p-table #dt [value]="practiceList"  dataKey="id" styleClass="p-datatable-customers" [rowHover]="true"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
     [paginator]="true" currentPageReportTemplate="Показаны записи с {first} по {last} из {totalRecords}"
     [filterDelay]="0" [globalFilterFields]="['name','name','.name','name']">
     <ng-template pTemplate="caption">
         <div class="table-header">
-            <span>ВЕСЬ СПИСОК ПРАКТИЧЕСКИХ РАБОТ</span>
-            <span>
-                <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
-            </span>
+            <div class="col-md-12">
+                <span>ВЕСЬ СПИСОК ПРАКТИЧЕСКИХ РАБОТ</span>
+                <span>
+                    <button class="btn btn-md btn-outline-primary ml-3" (click)="getAll()"><i class="fa fa-refresh"></i> Обновить</button>
+                </span>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -32,18 +46,18 @@
                 </div>
             </th>
             
-            <th pSortableColumn="Score">
+            <th >
                 <div class="p-d-flex p-jc-between p-ai-center">
                     Балл
-                    <p-sortIcon field="Score"></p-sortIcon>
-                    <p-columnFilter type="text" field="Score" display="menu" class="p-ml-auto"></p-columnFilter>
+                    <!-- <p-sortIcon field="Score"></p-sortIcon> -->
+                    <!-- <p-columnFilter type="text" field="Score" display="menu" class="p-ml-auto"></p-columnFilter> -->
                 </div>
             </th>
-            <th pSortableColumn="status">
+            <th >
                 <div class="p-d-flex p-jc-between p-ai-center">
                     Статус
-                    <p-sortIcon field="status"></p-sortIcon>
-                    <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto"></p-columnFilter>
+                    <!-- <p-sortIcon field="status"></p-sortIcon>
+                    <p-columnFilter type="text" field="status" display="menu" class="p-ml-auto"></p-columnFilter> -->
                 </div>
             </th>
             <th>
@@ -57,6 +71,7 @@
     <ng-template pTemplate="body" let-record>
         <tr class="p-selectable-row">
             <td style="width: 130px">
+                <span class="p-column-title">Действия</span>
                 <div class="btn-group dropdown">
                     <button class="dropdown-toggle btn btn-sm btn-outline-primary" id="dropdownMenuButton"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <i class="fa fa-cog"></i><span class="caret"></span>
@@ -71,26 +86,31 @@
                 </div>
             </td>
             <td>
-                <span class="p-column-title">{{record.name}}</span>
+                <span class="p-column-title">Название пракческого задания</span>
+                {{record.name}}
             </td>
             <td>
-                <span class="p-column-title">{{record.subjectName}}</span>
-            </td>
-            <td class="text-center">
-                <span class="p-column-title">{{getPracticeScore(record.id) | number: '1.0-1'}} </span>
+                <span class="p-column-title">Название предмета</span>
+                {{record.subjectName}}
             </td>
             <td>
-                <span class="p-column-title" style="color:rgb(0, 255, 0)" *ngIf="getPracticeStatus(record.id) == 'isAccept'">
+                <span class="p-column-title">Балл</span>
+                {{getPracticeScore(record.id) | number: '1.0-1'}} 
+            </td>
+            <td>
+                <span class="p-column-title">Статус</span>
+                <span style="color:rgb(0, 255, 0)" *ngIf="getPracticeStatus(record.id) == 'isAccept'">
                     Принято
                 </span>
-                <span class="p-column-title" style="color:red" *ngIf="getPracticeStatus(record.id) == 'isRevision'">
+                <span style="color:red" *ngIf="getPracticeStatus(record.id) == 'isRevision'">
                     Отправлено на доработку
                 </span>
-                <span class="p-column-title" style="color:rgb(1, 4, 206)" *ngIf="getPracticeStatus(record.id) == 'nothing'">
+                <span style="color:rgb(1, 4, 206)" *ngIf="getPracticeStatus(record.id) == 'nothing'">
                     На проверке
                 </span>
             </td>
             <td>
+                <span class="p-column-title">Прикрепленные файлы</span>
                 <button class="btn btn-sm btn-outline-primary" (click)="viewPracticeFileModal.show(record)"><i class="fa fa-eye"></i>Просмотр файлов</button>
             </td>
             

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService,ApplicationUser } from '../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { URI } from '../models/URI';
 import { FileDownloadService } from '../shared/fileService/file-download.service';
 import { ProgressStatus, ProgressStatusEnum } from '../shared/fileService/file-download.service';
 import { ChangePasswordModalComponent } from '../admin/users/change-password-modal/change-password-modal.component';
@@ -16,8 +16,9 @@ export class CabinetComponent implements OnInit {
   userDetails = new ApplicationUser();
   editMode = false;
   public response : {dbPath : ''}
-  readonly BaseURI = `https://localhost:44352/`;
-
+  imageToShow:any;
+  //readonly BaseURI = `https://localhost:44352/`;
+  readonly BaseURI = URI.BaseURI;
 
   public files: string[];
   public fileInDownload: string;
@@ -79,11 +80,13 @@ export class CabinetComponent implements OnInit {
 
   public uploadFinished = (event) =>{
     this.response = event;
+    this.createImgPath(this.response.dbPath);
   }
 
   public createImgPath = (serverPath: string) => {
     if(serverPath)
-    return  this.BaseURI + `${serverPath}`;
+      this.imageToShow = this.BaseURI + '/Download/GetPhoto?file='+serverPath;
+      // return  this.BaseURI + `${serverPath}`;
   }
 
 

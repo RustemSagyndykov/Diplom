@@ -125,7 +125,7 @@ export class LectureComponent implements OnInit {
   }
 
   getAllStudentPractice(){
-    this.studentPracticeService.getAll().subscribe((res:StudentPractice[])=>{
+    this.studentPracticeService.getAll('').subscribe((res:StudentPractice[])=>{
       this.studentPracticeList = res;
     });
   }

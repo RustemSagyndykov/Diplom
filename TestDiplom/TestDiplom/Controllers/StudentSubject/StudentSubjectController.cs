@@ -19,7 +19,7 @@ namespace TestDiplom.Controllers.StudentSubject
     {
         private readonly AuthenticationContext _context;
         public StudentSubjectController(AuthenticationContext context)
-        { 
+        {
             _context = context;
         }
 
@@ -109,7 +109,7 @@ namespace TestDiplom.Controllers.StudentSubject
         [Authorize]
         [Route("GetAll")]
         //GET : /api/StudentSubject/GetAll
-        public async Task<List<StudentSubjectModel>> GetAll()
+        public async Task<List<StudentSubjectModel>> GetAll(string filterText)
         {
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
 
@@ -135,6 +135,9 @@ namespace TestDiplom.Controllers.StudentSubject
 
                 studentSubjects.Add(s);
             }
+
+            studentSubjects = studentSubjects.Where(s => (!string.IsNullOrWhiteSpace(filterText)) ? s.SubjectName.ToUpper().Contains(filterText.ToUpper())
+            || s.SubjectScore.ToString() == filterText || s.AcademicStatus.ToUpper().Contains(filterText.ToUpper()): true).ToList();
 
             return studentSubjects;
         }
